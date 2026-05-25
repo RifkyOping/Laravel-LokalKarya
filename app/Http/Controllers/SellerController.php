@@ -28,7 +28,31 @@ class SellerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'category' => 'required|string',
+            'price' => 'required|numeric|min:0',
+            'description' => 'nullable|string',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+        ]);
+
+        $thumbnailPath = null;
+        if ($request->hasFile('thumbnail')) {
+            $thumbnailPath = $request->file('thumbnail')->store('produk', 'public');
+        }
+
+        \App\Models\Produk::create([
+            'user_id' => $request->user()->id,
+            'nama_produk' => $request->name,
+            'kategori' => $request->category,
+            'harga' => $request->price,
+            'deskripsi' => $request->description,
+            'gambar_produk' => $thumbnailPath,
+            'status' => 'aktif',
+            'status_verifikasi' => 'menunggu',
+        ]);
+
+        return redirect()->route('produk.seller')->with('success', 'Jasa berhasil ditambahkan dan sedang menunggu verifikasi.');
     }
 
     /**

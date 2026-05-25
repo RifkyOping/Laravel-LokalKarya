@@ -13,7 +13,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $totalSeller = User::where('role', 'seller')->count();
+        $totalSeller = User::query()->where('role', 'seller')->count();
         return view('admin.dashboard', compact('totalSeller'));
     }
     public function seller()
