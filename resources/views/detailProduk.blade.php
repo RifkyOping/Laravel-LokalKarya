@@ -50,67 +50,65 @@
 
                     <div class="space-y-4">
                         <div
-                            class="w-full h-[260px] sm:h-[400px] md:h-[500px] lg:h-[600px] rounded-[1.5rem] sm:rounded-[2rem] overflow-hidden border border-gray-100 shadow-sm bg-white">
+                            class="w-full h-[200px] sm:h-[360px] md:h-[460px] lg:h-[520px] rounded-[1.25rem] sm:rounded-[2rem] overflow-hidden border border-gray-100 shadow-sm bg-white">
                             <img src="{{ $produk->gambar_produk ? asset('storage/' . $produk->gambar_produk) : 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80' }}"
                                 alt="{{ $produk->nama_produk }}" class="w-full h-full object-cover">
                         </div>
                     </div>
 
-                    <div class="p-8 md:p-10 bg-white shadow-sm border border-gray-100 rounded-[2rem]">
+                    <div class="p-5 sm:p-8 md:p-10 bg-white shadow-sm border border-gray-100 rounded-[1.5rem] sm:rounded-[2rem]">
                         <span
-                            class="inline-flex items-center justify-center px-4 py-1.5 bg-indigo-50 text-indigo-600 font-bold text-xs rounded-full mb-4">
+                            class="inline-flex items-center justify-center px-3 py-1 sm:px-4 sm:py-1.5 bg-indigo-50 text-indigo-600 font-bold text-xs rounded-full mb-3 sm:mb-4">
                             {{ $produk->kategori }}
                         </span>
 
-                        <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight mb-4">
+                        <h1 class="text-xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight mb-3 sm:mb-4">
                             {{ $produk->nama_produk }}
                         </h1>
-                        
-                        <div class="mb-8 mt-6">
-                            <p class="text-sm text-gray-500 font-bold mb-1">Harga mulai dari</p>
-                            <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#4F46E5]">Rp{{ number_format($produk->harga, 0, ',', '.') }}</h2>
+
+                        <div class="mb-5 sm:mb-8 mt-3 sm:mt-6">
+                            <p class="text-xs sm:text-sm text-gray-500 font-bold mb-1">Harga mulai dari</p>
+                            <h2 class="text-2xl sm:text-4xl md:text-5xl font-extrabold text-[#4F46E5]">Rp{{ number_format($produk->harga, 0, ',', '.') }}</h2>
                         </div>
 
                         <div>
-                            <h3 class="text-lg font-extrabold text-gray-900 mb-4">Deskripsi</h3>
-                            <div class="prose prose-sm text-gray-600 font-medium space-y-4 whitespace-pre-line">
+                            <h3 class="text-base sm:text-lg font-extrabold text-gray-900 mb-3 sm:mb-4">Deskripsi</h3>
+                            <div class="prose prose-sm text-gray-600 font-medium space-y-3 sm:space-y-4 whitespace-pre-line text-sm">
                                 {{ $produk->deskripsi }}
                             </div>
                         </div>
                     </div>
 
-                    <div class="pt-4">
-                        <span class="text-[#4F46E5] font-bold text-sm uppercase tracking-wider">Portfolio</span>
-                        <h3 class="text-2xl font-extrabold text-gray-900 mt-1 mb-6">Hasil Desain Sebelumnya</h3>
+                    @php
+                        $portfolio = $produk->user->sellerProfile->link_portofolio ?? [];
+                    @endphp
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden group">
-                                <div class="h-48 overflow-hidden bg-gray-100">
-                                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-                                        alt="Portfolio 1"
-                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                                </div>
-                                <div class="p-5">
-                                    <h4 class="font-extrabold text-gray-900 text-base mb-1">Poster Webinar Nasional</h4>
-                                    <p class="text-xs text-gray-500 font-medium">Desain publikasi modern untuk kegiatan
-                                        webinar kampus.</p>
-                                </div>
-                            </div>
+                    @if(!empty($portfolio))
+                    <div class="pt-2 sm:pt-4">
+                        <span class="text-[#4F46E5] font-bold text-xs sm:text-sm uppercase tracking-wider">Portfolio</span>
+                        <h3 class="text-lg sm:text-2xl font-extrabold text-gray-900 mt-1 mb-4 sm:mb-6">Karya Seller</h3>
 
-                            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden group">
-                                <div class="h-48 overflow-hidden bg-gray-100">
-                                    <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-                                        alt="Portfolio 2"
-                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="flex flex-col gap-3">
+                            @foreach($portfolio as $item)
+                            <a href="{{ $item['link'] ?? '#' }}" target="_blank" rel="noopener noreferrer"
+                                class="flex items-center gap-4 bg-white border border-gray-100 rounded-2xl p-4 shadow-sm hover:shadow-md hover:border-indigo-200 transition-all group">
+                                <div class="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-indigo-100 transition-colors">
+                                    <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                                    </svg>
                                 </div>
-                                <div class="p-5">
-                                    <h4 class="font-extrabold text-gray-900 text-base mb-1">Feed Instagram Event</h4>
-                                    <p class="text-xs text-gray-500 font-medium">Publikasi visual untuk promosi acara
-                                        organisasi kampus.</p>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-bold text-gray-900 truncate">{{ $item['judul'] ?? 'Link Karya' }}</p>
+                                    <p class="text-xs text-indigo-500 font-medium truncate mt-0.5">{{ $item['link'] ?? '' }}</p>
                                 </div>
-                            </div>
+                                <svg class="w-4 h-4 text-gray-300 shrink-0 group-hover:text-indigo-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                </svg>
+                            </a>
+                            @endforeach
                         </div>
                     </div>
+                    @endif
 
                 </div>
 
@@ -147,13 +145,6 @@
                         <div class="flex flex-wrap gap-2 mb-6">
                             <span class="px-3 py-1.5 bg-gray-50 border border-gray-100 text-gray-600 rounded-full text-xs font-bold">{{ $produk->kategori }}</span>
                         </div>
-
-                        {{-- <ul class="space-y-2.5 text-xs text-gray-500 font-medium mb-8">
-                            <li class="flex items-center gap-2">
-                                <div class="w-1.5 h-1.5 rounded-full {{ ($produk->user->sellerProfile && $produk->user->sellerProfile->status_terima_order) ? 'bg-green-500' : 'bg-gray-300' }}"></div>
-                                {{ ($produk->user->sellerProfile && $produk->user->sellerProfile->status_terima_order) ? 'Sedang menerima project' : 'Status order tidak diketahui' }}
-                            </li>
-                        </ul> --}}
 
                         <div class="space-y-3">
                             <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $produk->user->sellerProfile->nomor_whatsapp ?? '') }}?text=Halo%20{{ urlencode($produk->user->name) }},%20saya%20tertarik%20dengan%20jasa/produk%20{{ urlencode($produk->nama_produk) }}%20di%20LOKALKARYA." target="_blank"

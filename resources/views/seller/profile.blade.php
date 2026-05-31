@@ -20,22 +20,25 @@
                         <h3 class="text-2xl font-extrabold text-gray-900 flex items-center gap-1.5">
                             {{ Auth::user()->name ?? 'Seller' }}
                             @if(Auth::user()->sellerProfile && Auth::user()->sellerProfile->status_verifikasi == 'diterima')
-                            <svg class="w-6 h-6 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
+                                <svg class="w-6 h-6 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
                             @endif
                         </h3>
-                        <p class="text-gray-500 font-medium text-sm">{{ Auth::user()->sellerProfile->bidang_keahlian ?? '' }}</p>
+                        <p class="text-gray-500 font-medium text-sm">
+                            {{ Auth::user()->sellerProfile->bidang_keahlian ?? '' }}</p>
                     </div>
                 </div>
                 <div class="flex flex-col items-end gap-2 w-full md:w-auto">
-                    <form action="{{ route('seller.profile.photo') }}" method="POST" enctype="multipart/form-data" class="w-full md:w-auto bg-gray-50/50 p-2 rounded-xl border border-gray-200 flex items-center justify-between gap-12 sm:min-w-[320px]">
+                    <form action="{{ route('seller.profile.photo') }}" method="POST" enctype="multipart/form-data"
+                        class="w-full md:w-auto bg-gray-50/50 p-2 rounded-xl border border-gray-200 flex items-center justify-between gap-12 sm:min-w-[320px]">
                         @csrf
                         @method('PATCH')
                         <span class="text-sm text-gray-500 font-medium pl-3">Unggah Foto Profil</span>
-                        <input type="file" name="foto" id="foto-input" class="hidden" accept="image/*" onchange="this.form.submit()">
+                        <input type="file" name="foto" id="foto-input" class="hidden" accept="image/*"
+                            onchange="this.form.submit()">
                         <button type="button" onclick="document.getElementById('foto-input').click()"
                             class="bg-white border border-gray-200 text-gray-700 hover:text-gray-900 hover:bg-gray-50 px-5 py-2 rounded-lg text-xs font-bold transition-all shadow-sm">
                             Pilih file
@@ -45,7 +48,8 @@
                         <span class="text-red-500 text-xs mt-1 self-start md:self-end">{{ $message }}</span>
                     @enderror
                     @if (session('status') === 'photo-updated')
-                        <span class="text-green-600 text-xs font-bold mt-1 self-start md:self-end">Foto berhasil diperbarui!</span>
+                        <span class="text-green-600 text-xs font-bold mt-1 self-start md:self-end">Foto berhasil
+                            diperbarui!</span>
                     @endif
                 </div>
             </div>
@@ -91,8 +95,7 @@
                                 <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
                                     Tentang Saya
                                 </label>
-                                <textarea name="tentang_saya" rows="3"
-                                    placeholder="Ceritakan tentang diri Anda..."
+                                <textarea name="tentang_saya" rows="3" placeholder="Ceritakan tentang diri Anda..."
                                     class="mt-1 block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm resize-none">{{ old('tentang_saya', Auth::user()->sellerProfile->deskripsi ?? '') }}</textarea>
                                 @error('tentang_saya')
                                     <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
@@ -130,7 +133,8 @@
                             class="mb-8 flex flex-col sm:flex-row gap-3 bg-gray-50 p-4 rounded-2xl border border-gray-100">
                             @csrf
                             <div class="flex-1 flex flex-col">
-                                <input type="text" name="judul_karya" value="{{ old('judul_karya') }}" placeholder="Judul Karya (Misal: Dribbble, GDrive)"
+                                <input type="text" name="judul_karya" value="{{ old('judul_karya') }}"
+                                    placeholder="Judul Karya (Misal: Dribbble, GDrive)"
                                     class="w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm text-sm">
                                 @error('judul_karya')
                                     <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
@@ -138,7 +142,8 @@
                             </div>
 
                             <div class="flex-1 flex flex-col">
-                                <input type="url" name="link_karya" value="{{ old('link_karya') }}" placeholder="https://..."
+                                <input type="url" name="link_karya" value="{{ old('link_karya') }}"
+                                    placeholder="https://..."
                                     class="w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm text-sm">
                                 @error('link_karya')
                                     <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
@@ -171,13 +176,15 @@
                                                 </svg>
                                             </div>
                                             <div class="truncate">
-                                                <h4 class="text-sm font-bold text-gray-900 truncate">{{ $item['judul'] ?? 'Link Karya' }}</h4>
+                                                <h4 class="text-sm font-bold text-gray-900 truncate">
+                                                    {{ $item['judul'] ?? 'Link Karya' }}</h4>
                                                 <a href="{{ $item['link'] ?? '#' }}" target="_blank"
                                                     class="text-xs font-medium text-blue-600 hover:underline truncate block">{{ $item['link'] ?? '#' }}</a>
                                             </div>
                                         </div>
 
-                                        <form action="{{ route('seller.portfolio.delete', $index) }}" method="POST" class="inline">
+                                        <form action="{{ route('seller.portfolio.delete', $index) }}" method="POST"
+                                            class="inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
@@ -192,7 +199,8 @@
                                     </div>
                                 @endforeach
                             @else
-                                <div class="text-center py-6 text-gray-400 font-medium text-sm border-2 border-dashed border-gray-150 rounded-2xl">
+                                <div
+                                    class="text-center py-6 text-gray-400 font-medium text-sm border-2 border-dashed border-gray-150 rounded-2xl">
                                     Belum ada link portfolio yang ditambahkan.
                                 </div>
                             @endif
@@ -214,7 +222,7 @@
                     <div class="p-8 bg-white shadow-sm border border-gray-100 rounded-[2rem] sticky top-28">
                         <h2 class="text-xl font-extrabold text-gray-900 mb-6">Kontak</h2>
 
-                        <form action="{{ route('seller.whatsapp.update') }}" method="POST" class="space-y-6">
+                        <form id="form-whatsapp" action="{{ route('seller.whatsapp.update') }}" method="POST" class="space-y-6">
                             @csrf
                             @method('PATCH')
 
@@ -222,13 +230,21 @@
                                 <label
                                     class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">WhatsApp</label>
 
-                                <input type="text" name="nomor_whatsapp"
+                                <input type="text" id="input-whatsapp" name="nomor_whatsapp"
                                     value="{{ old('nomor_whatsapp', Auth::user()->sellerProfile->nomor_whatsapp ?? '') }}"
-                                    placeholder="contoh : 081234567890"
+                                    placeholder="6281234567890"
+                                    inputmode="numeric"
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                     class="mt-1 block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm text-gray-900 font-medium">
 
+                                <p class="mt-2 text-xs text-gray-500">
+                                    *Pastikan nomor diawali dengan kode negara 62, tanpa spasi atau tanda plus (+).
+                                </p>
+
+                                <span id="wa-client-error" class="text-red-500 text-xs mt-1 block hidden"></span>
+
                                 @error('nomor_whatsapp')
-                                    <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+                                    <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                                 @enderror
                             </div>
 
@@ -238,12 +254,27 @@
                                     Simpan
                                 </button>
                                 @if (session('status') === 'whatsapp-updated')
-                                <span class="text-sm text-green-600 text-center font-medium mt-2 ml-6">Tersimpan!</span>
-                            @endif
+                                    <span class="text-sm text-green-600 text-center font-medium mt-2 ml-6">Tersimpan!</span>
+                                @endif
                             </div>
 
 
                         </form>
+
+                        <script>
+                            document.getElementById('form-whatsapp').addEventListener('submit', function (e) {
+                                var val = document.getElementById('input-whatsapp').value.trim();
+                                var errEl = document.getElementById('wa-client-error');
+                                if (!val.startsWith('62')) {
+                                    e.preventDefault();
+                                    errEl.textContent = 'Nomor harus diawali dengan 62 (contoh: 6281234567890).';
+                                    errEl.classList.remove('hidden');
+                                    document.getElementById('input-whatsapp').focus();
+                                } else {
+                                    errEl.classList.add('hidden');
+                                }
+                            });
+                        </script>
 
                     </div>
                 </div>

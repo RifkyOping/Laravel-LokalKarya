@@ -62,7 +62,9 @@ class SellerProfileController extends Controller
     public function updateWhatsapp(Request $request): RedirectResponse
     {
         $request->validate([
-            'nomor_whatsapp' => ['required', 'string', 'max:15'],
+            'nomor_whatsapp' => ['required', 'string', 'max:15', 'regex:/^62/'],
+        ], [
+            'nomor_whatsapp.regex' => 'Nomor WhatsApp harus diawali dengan kode negara 62 (contoh: 6281234567890).',
         ]);
 
         $user = $request->user();
