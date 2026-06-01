@@ -217,5 +217,100 @@
             </button>
         @endif
 
-    </div>
 </nav>
+
+{{-- ═══════════════════════════════════════════════════════════════
+     GLOBAL DELETE CONFIRMATION MODAL
+     Usage: onclick="openDeleteModal(formAction, title, description)"
+     ═══════════════════════════════════════════════════════════════ --}}
+<div id="delete-modal"
+     class="fixed inset-0 z-[999] flex items-center justify-center px-4"
+     style="display:none!important;"
+     aria-modal="true" role="dialog">
+
+    {{-- Backdrop --}}
+    <div id="delete-backdrop"
+         class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm"
+         onclick="closeDeleteModal()"></div>
+
+    {{-- Panel --}}
+    <div id="delete-panel"
+         class="relative bg-white rounded-3xl shadow-2xl w-full max-w-sm p-7 flex flex-col items-center text-center
+                transition-all duration-300 scale-90 opacity-0">
+
+        {{-- Icon --}}
+        <div class="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mb-5 ring-8 ring-red-50">
+            <svg class="w-8 h-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+            </svg>
+        </div>
+
+        {{-- Title --}}
+        <h3 id="delete-modal-title" class="text-lg font-extrabold text-gray-900 mb-2 leading-snug">
+            Hapus Item?
+        </h3>
+
+        {{-- Description --}}
+        <p id="delete-modal-desc" class="text-sm text-gray-500 font-medium mb-7 leading-relaxed">
+            Tindakan ini tidak dapat dibatalkan.
+        </p>
+
+        {{-- Hidden form --}}
+        <form id="delete-modal-form" method="POST" class="w-full">
+            @csrf
+            @method('DELETE')
+            <div class="flex gap-3 w-full">
+                <button type="button" onclick="closeDeleteModal()"
+                    class="flex-1 py-3 rounded-2xl font-bold text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 transition-all active:scale-95">
+                    Batal
+                </button>
+                <button type="submit"
+                    class="flex-1 py-3 rounded-2xl font-bold text-sm text-white bg-red-500 hover:bg-red-600 shadow-lg shadow-red-500/30 transition-all hover:-translate-y-0.5 active:scale-95">
+                    Ya, Hapus
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+(function () {
+    const modal    = document.getElementById('delete-modal');
+    const panel    = document.getElementById('delete-panel');
+    const form     = document.getElementById('delete-modal-form');
+    const titleEl  = document.getElementById('delete-modal-title');
+    const descEl   = document.getElementById('delete-modal-desc');
+
+    window.openDeleteModal = function (action, title, description) {
+        form.action  = action;
+        titleEl.textContent = title || 'Hapus Item?';
+        descEl.textContent  = description || 'Tindakan ini tidak dapat dibatalkan.';
+
+        modal.style.removeProperty('display');
+        document.body.style.overflow = 'hidden';
+
+        // Trigger animation
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                panel.classList.remove('scale-90', 'opacity-0');
+                panel.classList.add('scale-100', 'opacity-100');
+            });
+        });
+    };
+
+    window.closeDeleteModal = function () {
+        panel.classList.remove('scale-100', 'opacity-100');
+        panel.classList.add('scale-90', 'opacity-0');
+        setTimeout(() => {
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+        }, 250);
+    };
+
+    // Close on Escape key
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeDeleteModal();
+    });
+})();
+</script>

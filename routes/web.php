@@ -51,6 +51,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/produk', [AdminController::class, 'produk'])->name('admin.produk');
     Route::patch('/admin/seller/{sellerProfile}/setujui', [AdminController::class, 'setujuiSeller'])->name('admin.seller.setujui');
     Route::patch('/admin/seller/{sellerProfile}/tolak', [AdminController::class, 'tolakSeller'])->name('admin.seller.tolak');
+    Route::delete('/admin/seller/{sellerProfile}', [AdminController::class, 'destroySeller'])->name('admin.seller.destroy');
     Route::patch('/admin/produk/{produk}/setujui', [AdminController::class, 'setujuiProduk'])->name('admin.produk.setujui');
     Route::patch('/admin/produk/{produk}/tolak', [AdminController::class, 'tolakProduk'])->name('admin.produk.tolak');
     Route::delete('/admin/produk/{produk}', [AdminController::class, 'destroyProduk'])->name('admin.produk.destroy');
