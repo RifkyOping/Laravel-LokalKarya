@@ -79,7 +79,7 @@
                                 <p class="text-xs text-gray-500 mb-3">
                                     {{ $seller->nomor_whatsapp }}</p>
                                 @endif
-                                <div class="flex flex-wrap gap-2">
+                                <div class="flex flex-wrap items-center gap-2">
                                     @if($seller->status_verifikasi === 'menunggu')
                                         <form action="{{ route('admin.seller.setujui', $seller->id) }}" method="POST">
                                             @csrf
@@ -99,6 +99,17 @@
                                             <button type="submit" class="px-5 py-2 rounded-xl text-xs font-bold text-green-700 bg-green-50 hover:bg-green-100 transition-all active:scale-95">Setujui Kembali</button>
                                         </form>
                                     @endif
+
+                                    {{-- Tombol Hapus Akun Seller --}}
+                                    <form action="{{ route('admin.seller.destroy', $seller->id) }}" method="POST">
+                                        @csrf @method('DELETE')
+                                        <button type="button"
+                                            onclick="openDeleteModal('{{ route('admin.seller.destroy', $seller->id) }}', 'Hapus Akun Seller?', 'Akun {{ addslashes($seller->user->name ?? '') }} beserta semua produk dan datanya akan dihapus permanen.')"
+                                            title="Hapus Akun Seller"
+                                            class="w-8 h-8 rounded-xl flex items-center justify-center text-gray-400 border border-gray-200 hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-colors">
+                                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </div>

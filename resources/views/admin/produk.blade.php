@@ -87,18 +87,20 @@
                                             <button type="submit" class="px-5 py-2 rounded-xl text-xs font-bold text-gray-700 bg-white border border-gray-200 hover:border-red-400 hover:text-red-600 transition-all active:scale-95">Tolak</button>
                                         </form>
                                     @elseif($produk->status_verifikasi === 'ditolak')
-                                        <form action="{{ route('admin.produk.destroy', $produk->id) }}" method="POST"
-                                            onsubmit="return confirm('Hapus produk ini?')">
+                                        <form action="{{ route('admin.produk.destroy', $produk->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="px-5 py-2 rounded-xl text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 transition-all active:scale-95">Hapus Permanen</button>
+                                            <button type="button"
+                                                onclick="openDeleteModal('{{ route('admin.produk.destroy', $produk->id) }}', 'Hapus Produk?', 'Produk \'{{ addslashes($produk->nama_produk) }}\' akan dihapus permanen dari sistem.')"
+                                                class="px-5 py-2 rounded-xl text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 transition-all active:scale-95">Hapus Permanen</button>
                                         </form>
                                     @elseif($produk->status_verifikasi === 'diterima')
-                                        <form action="{{ route('admin.produk.destroy', $produk->id) }}" method="POST"
-                                            onsubmit="return confirm('Hapus produk yang sudah aktif ini?')">
+                                        <form action="{{ route('admin.produk.destroy', $produk->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="px-5 py-2 rounded-xl text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 transition-all active:scale-95">Hapus</button>
+                                            <button type="button"
+                                                onclick="openDeleteModal('{{ route('admin.produk.destroy', $produk->id) }}', 'Hapus Produk Aktif?', 'Produk \'{{ addslashes($produk->nama_produk) }}\' yang sudah aktif akan dihapus permanen.')"
+                                                class="px-5 py-2 rounded-xl text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 transition-all active:scale-95">Hapus</button>
                                         </form>
                                     @endif
                                 </div>

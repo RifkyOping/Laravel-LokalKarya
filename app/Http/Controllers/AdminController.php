@@ -8,6 +8,7 @@ use App\Models\Produk;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -91,6 +92,42 @@ class AdminController extends Controller
     {
         $sellerProfile->update(['status_verifikasi' => 'ditolak']);
         return redirect()->back()->with('success', 'Akun Seller berhasil ditolak.');
+    }
+
+    // Action untuk menghapus akun seller beserta semua datanya
+    public function destroySeller(SellerProfile $sellerProfile)
+    {
+        $user = $sellerProfile->user;
+
+        if (!$user) {
+            return redirect()->back()->with('error', 'User tidak ditemukan.');
+        }
+
+        // Hapus semua produk & gambar milik seller ini
+        $produkList = Produk::where('user_id', $user->id)->get();
+        foreach ($produkList as $produk) {
+            if ($produk->gambar_produk
+                && !str_starts_with($produk->gambar_produk, 'http')
+                && Storage::disk('public')->exists($produk->gambar_produk)) {
+                Storage::disk('public')->delete($produk->gambar_produk);
+            }
+            $produk->delete();
+        }
+
+        // Hapus foto profil seller jika ada
+        if ($sellerProfile->foto
+            && !str_starts_with($sellerProfile->foto, 'http')
+            && Storage::disk('public')->exists($sellerProfile->foto)) {
+            Storage::disk('public')->delete($sellerProfile->foto);
+        }
+
+        $sellerName = $user->name;
+
+        // Hapus SellerProfile & User (cascade)
+        $sellerProfile->delete();
+        $user->delete();
+
+        return redirect()->route('admin.seller')->with('success', "Akun seller '{$sellerName}' beserta semua datanya berhasil dihapus.");
     }
 
     // Action untuk menyetujui produk
