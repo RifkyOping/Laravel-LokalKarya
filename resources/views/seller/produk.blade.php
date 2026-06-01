@@ -78,7 +78,7 @@
                             <div class="space-y-3 sm:hidden">
                                 @foreach($section['items'] as $produk)
                                 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex gap-3">
-                                    <img src="{{ $produk->gambar_produk ? asset('storage/' . $produk->gambar_produk) : 'https://placehold.co/150x150/e2e8f0/64748b?text=No+Image' }}"
+                                    <img src="{{ produk_image_url($produk->gambar_produk, 'https://placehold.co/150x150/e2e8f0/64748b?text=No+Image') }}"
                                         class="w-16 h-16 rounded-xl object-cover border border-gray-100 shrink-0">
                                     <div class="flex-1 min-w-0">
                                         <div class="flex items-start justify-between gap-2 mb-1">
@@ -89,8 +89,19 @@
                                         <p class="font-extrabold text-indigo-600 text-sm">Rp{{ number_format($produk->harga, 0, ',', '.') }}</p>
                                         <div class="flex gap-2 mt-2.5">
                                             <a href="{{ route('seller.edit', $produk->id) }}"
-                                                class="flex-1 text-center py-2 rounded-xl font-bold text-xs bg-white text-gray-700 border border-gray-200 hover:border-indigo-400 hover:text-indigo-600 transition-all active:scale-95">Edit</a>
-                                            <button class="flex-1 py-2 rounded-xl font-bold text-xs bg-white text-gray-700 border border-gray-200 hover:border-red-400 hover:text-red-600 transition-all active:scale-95">Hapus</button>
+                                                title="Edit"
+                                                class="w-8 h-8 rounded-xl flex items-center justify-center text-gray-400 border border-gray-200 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 transition-colors">
+                                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                            </a>
+                                            <form action="{{ route('produk.destroy', $produk->id) }}" method="POST"
+                                                onsubmit="return confirm('Yakin hapus produk ini?')">
+                                                @csrf @method('DELETE')
+                                                <button type="submit"
+                                                    title="Hapus"
+                                                    class="w-8 h-8 rounded-xl flex items-center justify-center text-gray-400 border border-gray-200 hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-colors">
+                                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                                </button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -115,7 +126,7 @@
                                             <tr class="hover:bg-gray-50/50 transition-colors">
                                                 <td class="px-5 py-4">
                                                     <div class="flex items-center gap-3">
-                                                        <img src="{{ $produk->gambar_produk ? asset('storage/' . $produk->gambar_produk) : 'https://placehold.co/150x150/e2e8f0/64748b?text=No+Image' }}"
+                                                        <img src="{{ produk_image_url($produk->gambar_produk, 'https://placehold.co/150x150/e2e8f0/64748b?text=No+Image') }}"
                                                             class="w-11 h-11 rounded-xl object-cover border border-gray-100 shrink-0">
                                                         <span class="font-bold text-gray-900 text-sm line-clamp-2 max-w-[200px]">{{ $produk->nama_produk }}</span>
                                                     </div>
@@ -130,10 +141,21 @@
                                                     <span class="px-2.5 py-1 font-bold text-[11px] rounded-full {{ $section['badge_bg'] }} {{ $section['badge_text'] }}">{{ $section['label'] }}</span>
                                                 </td>
                                                 <td class="px-5 py-4">
-                                                    <div class="flex items-center justify-center gap-2">
+                                                    <div class="flex items-center justify-center gap-1.5">
                                                         <a href="{{ route('seller.edit', $produk->id) }}"
-                                                            class="px-4 py-2 rounded-xl font-bold text-xs bg-white text-gray-700 border border-gray-200 hover:border-indigo-400 hover:text-indigo-600 transition-all active:scale-95">Edit</a>
-                                                        <button class="px-4 py-2 rounded-xl font-bold text-xs bg-white text-gray-700 border border-gray-200 hover:border-red-500 hover:text-red-600 transition-all active:scale-95">Hapus</button>
+                                                            title="Edit"
+                                                            class="w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:bg-blue-50 hover:text-blue-600 transition-colors">
+                                                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                                        </a>
+                                                        <form action="{{ route('produk.destroy', $produk->id) }}" method="POST"
+                                                            onsubmit="return confirm('Yakin hapus produk ini?')">
+                                                            @csrf @method('DELETE')
+                                                            <button type="submit"
+                                                                title="Hapus"
+                                                                class="w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:bg-red-50 hover:text-red-500 transition-colors">
+                                                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                                            </button>
+                                                        </form>
                                                     </div>
                                                 </td>
                                             </tr>

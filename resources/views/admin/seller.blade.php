@@ -76,7 +76,8 @@
                                     @endif
                                 </div>
                                 @if($seller->nomor_whatsapp)
-                                <p class="text-xs text-gray-500 mb-3">📱 {{ $seller->nomor_whatsapp }}</p>
+                                <p class="text-xs text-gray-500 mb-3">
+                                    {{ $seller->nomor_whatsapp }}</p>
                                 @endif
                                 <div class="flex flex-wrap gap-2">
                                     @if($seller->status_verifikasi === 'menunggu')
@@ -85,16 +86,11 @@
                                             @method('PATCH')
                                             <button type="submit" class="px-5 py-2 rounded-xl text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 transition-all active:scale-95">✓ Setujui</button>
                                         </form>
-                                        <form action="{{ route('admin.seller.tolak', $seller->id) }}" method="POST">
-                                            @csrf
-                                            @method('PATCH')
-                                            <button type="submit" class="px-5 py-2 rounded-xl text-xs font-bold text-gray-700 bg-white border border-gray-200 hover:border-red-400 hover:text-red-600 transition-all active:scale-95">✕ Tolak</button>
-                                        </form>
                                     @elseif($seller->status_verifikasi === 'diterima')
                                         <form action="{{ route('admin.seller.tolak', $seller->id) }}" method="POST">
                                             @csrf
                                             @method('PATCH')
-                                            <button type="submit" class="px-5 py-2 rounded-xl text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 transition-all active:scale-95">Batalkan & Tolak</button>
+                                            <button type="submit" class="px-5 py-2 rounded-xl text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 transition-all active:scale-95">Batalkan</button>
                                         </form>
                                     @else
                                         <form action="{{ route('admin.seller.setujui', $seller->id) }}" method="POST">

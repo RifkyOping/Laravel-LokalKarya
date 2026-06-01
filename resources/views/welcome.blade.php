@@ -77,15 +77,15 @@
     <!-- Hero Section -->
     <section class="py-8 sm:py-14 text-center max-w-4xl mx-auto px-4 animate-fade-in-up">
         <div class="inline-block bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold tracking-wide mb-4">
-            ✨ Platform Jasa Kreatif Mahasiswa Indonesia
+            ✨ Platform Jasa Kreatif Mahasiswa Universitas Sulawesi Barat
         </div>
 
         <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-4 leading-tight">
-            Dari Mahasiswa <br class="sm:hidden"> untuk <span class="text-blue-600">Dunia</span>
+            Dari Mahasiswa <br class="sm:hidden"> untuk <span class="text-blue-600">Sulawesi Barat</span>
         </h1>
 
         <p class="text-sm sm:text-base text-gray-500 mb-6 max-w-xl mx-auto leading-relaxed">
-            Temukan jasa desain, UI/UX, video editing, fotografi, dan karya kreatif dari mahasiswa berbakat Indonesia.
+            Temukan jasa desain, UI/UX, video editing, fotografi, dan karya kreatif dari mahasiswa berbakat Sulawesi Barat.
         </p>
 
         <!-- Search Bar - Mobile optimized -->
@@ -99,7 +99,7 @@
                         placeholder="Cari jasa atau produk..."
                         class="w-full bg-transparent border-none focus:ring-0 text-sm text-gray-900 pl-9 sm:pl-12 pr-3 py-3 sm:py-3.5 outline-none">
                 </div>
-                <select name="filter_type" class="hidden sm:block bg-transparent border-none focus:ring-0 text-xs text-gray-600 font-semibold pr-3 py-3 cursor-pointer outline-none border-l border-gray-100 pl-3">
+                <select name="filter_type" class="hidden sm:block bg-transparent border-none focus:ring-0 text-xs text-gray-600 font-semibold pr-6 py-3 cursor-pointer outline-none border-l border-gray-100 pl-3">
                     <option value="semua" {{ request('filter_type') == 'semua' ? 'selected' : '' }}>Semua</option>
                     <option value="judul" {{ request('filter_type') == 'judul' ? 'selected' : '' }}>Judul</option>
                     <option value="kategori" {{ request('filter_type') == 'kategori' ? 'selected' : '' }}>Kategori</option>
@@ -116,14 +116,16 @@
         <div class="flex gap-2 overflow-x-auto filter-scroll pb-1 justify-start sm:justify-center px-0">
             <a href="{{ route('home', array_merge(request()->query(), ['kategori' => null])) }}"
                 class="shrink-0 {{ !request('kategori') ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-white text-gray-600 border border-gray-200' }} px-4 py-2 rounded-full text-xs font-semibold transition-all active:scale-95">Semua</a>
-            <a href="{{ route('home', array_merge(request()->query(), ['kategori' => 'UI/UX'])) }}"
-                class="shrink-0 {{ request('kategori') == 'UI/UX' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-white text-gray-600 border border-gray-200' }} px-4 py-2 rounded-full text-xs font-semibold transition-all active:scale-95">🎨 UI/UX</a>
-            <a href="{{ route('home', array_merge(request()->query(), ['kategori' => 'Desain Grafis'])) }}"
-                class="shrink-0 {{ request('kategori') == 'Desain Grafis' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-white text-gray-600 border border-gray-200' }} px-4 py-2 rounded-full text-xs font-semibold transition-all active:scale-95">✏️ Desain Grafis</a>
-            <a href="{{ route('home', array_merge(request()->query(), ['kategori' => 'Video Editing'])) }}"
-                class="shrink-0 {{ request('kategori') == 'Video Editing' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-white text-gray-600 border border-gray-200' }} px-4 py-2 rounded-full text-xs font-semibold transition-all active:scale-95">🎬 Video Editing</a>
+            <a href="{{ route('home', array_merge(request()->query(), ['kategori' => 'Social-Media'])) }}"
+                class="shrink-0 {{ request('kategori') == 'Social-Media' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-white text-gray-600 border border-gray-200' }} px-4 py-2 rounded-full text-xs font-semibold transition-all active:scale-95">Social Media</a>
+            <a href="{{ route('home', array_merge(request()->query(), ['kategori' => 'UI-Design'])) }}"
+                class="shrink-0 {{ request('kategori') == 'UI-Design' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-white text-gray-600 border border-gray-200' }} px-4 py-2 rounded-full text-xs font-semibold transition-all active:scale-95">UI Design</a>
+            <a href="{{ route('home', array_merge(request()->query(), ['kategori' => 'Desain-Grafis'])) }}"
+                class="shrink-0 {{ request('kategori') == 'Desain-Grafis' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-white text-gray-600 border border-gray-200' }} px-4 py-2 rounded-full text-xs font-semibold transition-all active:scale-95">Desain Grafis</a>
+            <a href="{{ route('home', array_merge(request()->query(), ['kategori' => 'Video-Editing'])) }}"
+                class="shrink-0 {{ request('kategori') == 'Video-Editing' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-white text-gray-600 border border-gray-200' }} px-4 py-2 rounded-full text-xs font-semibold transition-all active:scale-95">Video Editing</a>
             <a href="{{ route('home', array_merge(request()->query(), ['kategori' => 'Fotografi'])) }}"
-                class="shrink-0 {{ request('kategori') == 'Fotografi' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-white text-gray-600 border border-gray-200' }} px-4 py-2 rounded-full text-xs font-semibold transition-all active:scale-95">📷 Fotografi</a>
+                class="shrink-0 {{ request('kategori') == 'Fotografi' ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'bg-white text-gray-600 border border-gray-200' }} px-4 py-2 rounded-full text-xs font-semibold transition-all active:scale-95">Fotografi</a>
         </div>
     </section>
 
@@ -145,7 +147,7 @@
             <a href="{{ route('produk.detail', $produk->id) }}"
                 class="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col">
                 <div class="relative overflow-hidden">
-                    <img src="{{ $produk->gambar_produk ? asset('storage/' . $produk->gambar_produk) : 'https://placehold.co/400x300/e2e8f0/64748b?text=' . urlencode($produk->kategori) }}"
+                    <img src="{{ produk_image_url($produk->gambar_produk, 'https://placehold.co/400x300/e2e8f0/64748b?text=' . urlencode($produk->kategori)) }}"
                         alt="{{ $produk->nama_produk }}"
                         class="w-full h-32 sm:h-44 object-cover group-hover:scale-105 transition-transform duration-500">
                     <span class="absolute top-2 left-2 text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-blue-600 bg-white/90 backdrop-blur-sm px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md">{{ $produk->kategori }}</span>
@@ -207,7 +209,7 @@
                         <div class="w-7 h-7 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-base">L</div>
                         <span class="font-extrabold text-base tracking-tight">LOKALKARYA</span>
                     </div>
-                    <p class="text-gray-500 text-xs leading-relaxed">Platform pemasaran jasa kreatif mahasiswa Indonesia.</p>
+                    <p class="text-gray-500 text-xs leading-relaxed">Platform pemasaran jasa kreatif mahasiswa Universitas Sulawesi Barat.</p>
                 </div>
                 <div>
                     <h4 class="font-bold text-gray-900 mb-3 text-sm">Navigasi</h4>

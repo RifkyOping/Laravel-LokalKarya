@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Produk;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -38,7 +39,8 @@ class ProdukController extends Controller
      */
     public function create()
     {
-        return view('seller.create');
+        $categories = Category::where('is_active', true)->orderBy('nama')->get();
+        return view('seller.create', compact('categories'));
     }
 
     /**
@@ -47,16 +49,26 @@ class ProdukController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'        => 'required|string|max:255',
-            'category'    => 'required|string',
-            'price'       => 'required|numeric|min:0',
-            'description' => 'required|string',
-            'thumbnail'   => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'name'          => 'required|string|max:255',
+            'category'      => 'required|string',
+            'price'         => 'required|numeric|min:0',
+            'description'   => 'required|string',
+            'thumbnail'     => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'thumbnail_url' => 'nullable|url|max:2048',
         ]);
+
+        // Pastikan setidaknya salah satu thumbnail diberikan
+        if (!$request->hasFile('thumbnail') && empty($request->thumbnail_url)) {
+            return back()->withErrors(['thumbnail' => 'Thumbnail wajib diisi: upload file atau masukkan link URL gambar.'])->withInput();
+        }
 
         $thumbnailPath = null;
         if ($request->hasFile('thumbnail')) {
+            // Upload file lokal ke storage
             $thumbnailPath = $request->file('thumbnail')->store('thumbnails', 'public');
+        } elseif ($request->thumbnail_url) {
+            // Simpan URL langsung ke database
+            $thumbnailPath = $request->thumbnail_url;
         }
 
         $produk = new Produk();
@@ -93,7 +105,8 @@ class ProdukController extends Controller
             abort(403, 'Anda tidak memiliki akses untuk mengubah produk ini.');
         }
 
-        return view('seller.edit', compact('produk'));
+        $categories = Category::where('is_active', true)->orderBy('nama')->get();
+        return view('seller.edit', compact('produk', 'categories'));
     }
 
     /**

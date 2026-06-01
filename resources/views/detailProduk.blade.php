@@ -51,7 +51,7 @@
                     <div class="space-y-4">
                         <div
                             class="w-full h-[200px] sm:h-[360px] md:h-[460px] lg:h-[520px] rounded-[1.25rem] sm:rounded-[2rem] overflow-hidden border border-gray-100 shadow-sm bg-white">
-                            <img src="{{ $produk->gambar_produk ? asset('storage/' . $produk->gambar_produk) : 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80' }}"
+                            <img src="{{ produk_image_url($produk->gambar_produk, 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') }}"
                                 alt="{{ $produk->nama_produk }}" class="w-full h-full object-cover">
                         </div>
                     </div>

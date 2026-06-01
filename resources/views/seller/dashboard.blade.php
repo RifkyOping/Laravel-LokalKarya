@@ -72,7 +72,7 @@
                         <a href="{{ route('produk.detail', $produk->id) }}"
                             class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col group hover:border-blue-200 hover:shadow-md transition-all">
                             <div class="h-36 sm:h-44 overflow-hidden relative">
-                                <img src="{{ $produk->gambar_produk ? asset('storage/' . $produk->gambar_produk) : 'https://placehold.co/600x400/e2e8f0/64748b?text=No+Image' }}"
+                                <img src="{{ produk_image_url($produk->gambar_produk, 'https://placehold.co/600x400/e2e8f0/64748b?text=No+Image') }}"
                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                                 <span class="absolute top-2 left-2 text-[10px] font-bold uppercase bg-white/90 text-blue-600 px-2 py-0.5 rounded-lg">
                                     {{ ucwords(str_replace('-', ' ', $produk->kategori)) }}

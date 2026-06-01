@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\SellerProfile;
 use App\Models\Produk;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -50,7 +52,9 @@ class AdminController extends Controller
             ->sortByDesc('waktu')
             ->take(5);
 
-        return view('admin.dashboard', compact('totalSeller', 'pendingSeller', 'pendingProduk', 'recentActivities'));
+        $totalKategori = Category::count();
+
+        return view('admin.dashboard', compact('totalSeller', 'pendingSeller', 'pendingProduk', 'recentActivities', 'totalKategori'));
     }
 
     public function seller()
@@ -111,5 +115,72 @@ class AdminController extends Controller
         }
         $produk->delete();
         return redirect()->back()->with('success', 'Jasa atau Produk berhasil dihapus.');
+    }
+
+    // ─── Manajemen Kategori ──────────────────────────────────────────
+
+    public function kategori()
+    {
+        $categories = Category::orderBy('nama')->get();
+        return view('admin.kategori', compact('categories'));
+    }
+
+    public function storeKategori(Request $request)
+    {
+        $request->validate([
+            'nama' => 'required|string|max:100',
+            'slug' => 'nullable|string|max:100',
+        ]);
+
+        $slug = $request->slug
+            ? Str::slug($request->slug, '-')
+            : Str::slug($request->nama, '-');
+
+        // Pastikan slug unik
+        $originalSlug = $slug;
+        $i = 1;
+        while (Category::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $i++;
+        }
+
+        Category::create(['nama' => $request->nama, 'slug' => $slug, 'is_active' => true]);
+
+        return redirect()->route('admin.kategori')->with('success', 'Kategori berhasil ditambahkan.');
+    }
+
+    public function updateKategori(Request $request, Category $category)
+    {
+        $request->validate([
+            'nama' => 'required|string|max:100',
+            'slug' => 'nullable|string|max:100',
+        ]);
+
+        $slug = $request->slug
+            ? Str::slug($request->slug, '-')
+            : Str::slug($request->nama, '-');
+
+        // Pastikan slug unik (kecuali milik diri sendiri)
+        $originalSlug = $slug;
+        $i = 1;
+        while (Category::where('slug', $slug)->where('id', '!=', $category->id)->exists()) {
+            $slug = $originalSlug . '-' . $i++;
+        }
+
+        $category->update(['nama' => $request->nama, 'slug' => $slug]);
+
+        return redirect()->route('admin.kategori')->with('success', 'Kategori berhasil diperbarui.');
+    }
+
+    public function toggleKategori(Category $category)
+    {
+        $category->update(['is_active' => !$category->is_active]);
+        $status = $category->is_active ? 'diaktifkan' : 'dinonaktifkan';
+        return redirect()->back()->with('success', "Kategori berhasil {$status}.");
+    }
+
+    public function destroyKategori(Category $category)
+    {
+        $category->delete();
+        return redirect()->route('admin.kategori')->with('success', 'Kategori berhasil dihapus.');
     }
 }

@@ -238,7 +238,7 @@
                                     class="mt-1 block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm text-gray-900 font-medium">
 
                                 <p class="mt-2 text-xs text-gray-500">
-                                    *Pastikan nomor diawali dengan kode negara 62, tanpa spasi atau tanda plus (+).
+                                    *Pastikan nomor diawali dengan kode negara 62, tanpa spasi dan tanpa tanda plus (+).
                                 </p>
 
                                 <span id="wa-client-error" class="text-red-500 text-xs mt-1 block hidden"></span>

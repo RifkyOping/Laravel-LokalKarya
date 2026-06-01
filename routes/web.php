@@ -32,6 +32,7 @@ Route::middleware(['auth', 'role:seller'])->group(function () {
     Route::post('/seller/produk', [ProdukController::class, 'store'])->name('seller.store');
     Route::get('/seller/produk/{produk}/edit', [ProdukController::class, 'edit'])->name('seller.edit');
     Route::put('/seller/produk/{produk}', [ProdukController::class, 'update'])->name('seller.update');
+    Route::delete('/seller/produk/{produk}', [ProdukController::class, 'destroy'])->name('produk.destroy');
 
     Route::get('/seller/profil', [SellerProfileController::class, 'edit'])->name('profile.seller');
     Route::patch('/seller/profil', [SellerProfileController::class, 'update'])->name('update.seller');
@@ -53,6 +54,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::patch('/admin/produk/{produk}/setujui', [AdminController::class, 'setujuiProduk'])->name('admin.produk.setujui');
     Route::patch('/admin/produk/{produk}/tolak', [AdminController::class, 'tolakProduk'])->name('admin.produk.tolak');
     Route::delete('/admin/produk/{produk}', [AdminController::class, 'destroyProduk'])->name('admin.produk.destroy');
+    Route::get('/admin/kategori', [AdminController::class, 'kategori'])->name('admin.kategori');
+    Route::post('/admin/kategori', [AdminController::class, 'storeKategori'])->name('admin.kategori.store');
+    Route::put('/admin/kategori/{category}', [AdminController::class, 'updateKategori'])->name('admin.kategori.update');
+    Route::patch('/admin/kategori/{category}/toggle', [AdminController::class, 'toggleKategori'])->name('admin.kategori.toggle');
+    Route::delete('/admin/kategori/{category}', [AdminController::class, 'destroyKategori'])->name('admin.kategori.destroy');
 });
 
 // ─── Routes umum (auth tanpa role tertentu) ──────────────────────────

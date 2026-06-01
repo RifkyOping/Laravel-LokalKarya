@@ -40,11 +40,9 @@
                             <label for="category" class="block text-[13px] font-bold text-gray-700 mb-2">Kategori</label>
                             <select id="category" name="category"
                                 class="block w-full rounded-xl border-gray-200 bg-indigo-50/40 focus:border-[#4F46E5] focus:ring-[#4F46E5] shadow-sm text-sm py-2.5 text-gray-700">
-                                <option value="desain-publikasi" {{ old('category', $produk->kategori) == 'desain-publikasi' ? 'selected' : '' }}>Desain Publikasi</option>
-                                <option value="ui-design" {{ old('category', $produk->kategori) == 'ui-design' ? 'selected' : '' }}>UI Design</option>
-                                <option value="social-media" {{ old('category', $produk->kategori) == 'social-media' ? 'selected' : '' }}>Social Media</option>
-                                <option value="web-development" {{ old('category', $produk->kategori) == 'web-development' ? 'selected' : '' }}>Web Development</option>
-                                <option value="video-editing" {{ old('category', $produk->kategori) == 'video-editing' ? 'selected' : '' }}>Video Editing</option>
+                                @foreach($categories as $cat)
+                                <option value="{{ $cat->slug }}" {{ old('category', $produk->kategori) == $cat->slug ? 'selected' : '' }}>{{ $cat->nama }}</option>
+                                @endforeach
                             </select>
                         </div>
 
@@ -70,7 +68,7 @@
                         <div id="preview-container" class="mt-6">
                             <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Preview Thumbnail:</p>
                             <img id="image-preview" 
-                                 src="{{ $produk->gambar_produk ? asset('storage/' . $produk->gambar_produk) : '' }}" 
+                                 src="{{ produk_image_url($produk->gambar_produk, '') }}" 
                                  alt="Preview Thumbnail"
                                  class="w-48 h-32 object-cover rounded-xl border border-gray-200 shadow-sm">
                         </div>

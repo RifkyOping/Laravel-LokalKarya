@@ -40,21 +40,31 @@
             <main class="flex-1 overflow-y-auto">
                 <div class="max-w-5xl mx-auto px-4 sm:px-8 py-6 pb-28 lg:pb-10 space-y-6">
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="bg-white px-8 py-6 rounded-[1.5rem] border border-gray-100 shadow-sm">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="bg-white px-6 py-5 rounded-[1.5rem] border border-gray-100 shadow-sm">
                             <h3 class="text-xs font-bold text-gray-400 mb-2">Total Seller</h3>
                             <p class="text-4xl font-extrabold text-[#0f172a]">{{ $totalSeller }}</p>
                         </div>
 
-                        <div class="bg-white px-8 py-6 rounded-[1.5rem] border border-gray-100 shadow-sm">
+                        <div class="bg-white px-6 py-5 rounded-[1.5rem] border border-gray-100 shadow-sm">
                             <h3 class="text-xs font-bold text-gray-400 mb-2">Menunggu Verifikasi Akun</h3>
                             <p class="text-4xl font-extrabold text-[#0f172a]">{{ $pendingSeller }}</p>
                         </div>
 
-                        <div class="bg-white px-8 py-6 rounded-[1.5rem] border border-gray-100 shadow-sm">
+                        <div class="bg-white px-6 py-5 rounded-[1.5rem] border border-gray-100 shadow-sm">
                             <h3 class="text-xs font-bold text-gray-400 mb-2">Menunggu Verifikasi Jasa / Produk</h3>
                             <p class="text-4xl font-extrabold text-[#0f172a]">{{ $pendingProduk }}</p>
                         </div>
+
+                        <a href="{{ route('admin.kategori') }}"
+                            class="bg-indigo-600 px-6 py-5 rounded-[1.5rem] border border-indigo-600 shadow-sm hover:bg-indigo-700 transition-colors group cursor-pointer block">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="text-xs font-bold text-indigo-200">Total Kategori</h3>
+                                <svg class="w-4 h-4 text-indigo-300 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                            </div>
+                            <p class="text-4xl font-extrabold text-white">{{ $totalKategori }}</p>
+                            <p class="text-[11px] font-semibold text-indigo-200 mt-1">Kelola kategori →</p>
+                        </a>
                     </div>
 
                     <div>

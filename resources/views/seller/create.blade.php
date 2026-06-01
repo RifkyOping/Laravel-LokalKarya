@@ -48,11 +48,9 @@
                             <select id="category" name="category"
                                 class="block w-full rounded-xl border-gray-200 bg-indigo-50/40 focus:border-[#4F46E5] focus:ring-[#4F46E5] shadow-sm text-sm py-2.5 text-gray-700">
                                 <option value="" disabled selected>Pilih kategori</option>
-                                <option value="desain-publikasi">Desain Publikasi</option>
-                                <option value="ui-design">UI Design</option>
-                                <option value="social-media">Social Media</option>
-                                <option value="web-development">Web Development</option>
-                                <option value="video-editing">Video Editing</option>
+                                @foreach($categories as $cat)
+                                <option value="{{ $cat->slug }}">{{ $cat->nama }}</option>
+                                @endforeach
                             </select>
                         </div>
 
@@ -72,28 +70,65 @@
                     </div>
                 </div>
 
-                <div
-                    class="p-8 bg-white shadow-sm border border-gray-100 rounded-[2rem] flex flex-col sm:flex-row sm:items-start justify-between gap-6 relative">
+                <div class="p-8 bg-white shadow-sm border border-gray-100 rounded-[2rem] space-y-5">
                     <div>
                         <h3 class="text-xl font-extrabold text-gray-900">Thumbnail</h3>
-                        <p class="text-sm text-gray-500 font-medium mt-1">Upload gambar terbaik untuk menarik perhatian
-                            pembeli.</p>
+                        <p class="text-sm text-gray-500 font-medium mt-1">Upload gambar terbaik atau masukkan link gambar untuk menarik perhatian pembeli.</p>
+                    </div>
 
-                        <div id="preview-container" class="hidden mt-6">
-                            <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Preview Thumbnail:
-                            </p>
-                            <img id="image-preview" src="" alt="Preview Thumbnail"
-                                class="w-48 h-32 object-cover rounded-xl border border-gray-200 shadow-sm">
+                    {{-- Tab Toggle --}}
+                    <div class="flex gap-2 p-1 bg-gray-100 rounded-xl w-fit">
+                        <button type="button" id="tab-upload"
+                            onclick="switchTab('upload')"
+                            class="px-5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 bg-white text-indigo-600 shadow-sm">
+                            📁 Upload File
+                        </button>
+                        <button type="button" id="tab-url"
+                            onclick="switchTab('url')"
+                            class="px-5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 text-gray-500 hover:text-gray-700">
+                            🔗 Link URL
+                        </button>
+                    </div>
+
+                    {{-- Panel: Upload File --}}
+                    <div id="panel-upload">
+                        <label class="block text-[13px] font-bold text-gray-700 mb-2">Upload dari Perangkat</label>
+                        <div class="relative flex items-center gap-4">
+                            <div class="relative">
+                                <input type="file" id="thumbnail" name="thumbnail" onchange="previewFromFile(event)"
+                                    class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" accept="image/*">
+                                <button type="button"
+                                    class="bg-indigo-50 border border-indigo-200 text-indigo-700 px-6 py-2.5 rounded-xl font-semibold text-sm transition-all hover:bg-indigo-100 hover:-translate-y-0.5 active:scale-95">
+                                    Pilih Gambar
+                                </button>
+                            </div>
+                            <span id="file-name" class="text-sm text-gray-400 italic">Belum ada file dipilih</span>
                         </div>
                     </div>
 
-                    <div class="relative flex items-center justify-center shrink-0 mt-2">
-                        <input type="file" id="thumbnail" name="thumbnail" onchange="previewImage(event)"
-                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" accept="image/*">
-                        <button type="button"
-                            class="text-black px-8 py-3 rounded-xl font-medium text-sm shadow-md shadow-indigo-600/20 transition-all hover:-translate-y-0.5 active:scale-95">
-                            Upload file
-                        </button>
+                    {{-- Panel: Link URL --}}
+                    <div id="panel-url" class="hidden">
+                        <label for="thumbnail_url" class="block text-[13px] font-bold text-gray-700 mb-2">Link Gambar (Google Drive / URL langsung)</label>
+                        <input type="url" id="thumbnail_url" name="thumbnail_url"
+                            placeholder="https://google.com/uc?export=view&id=..."
+                            oninput="previewFromUrl(this.value)"
+                            class="block w-full rounded-xl border-gray-200 focus:border-[#4F46E5] focus:ring-[#4F46E5] shadow-sm text-sm py-2.5">
+                        <p class="mt-2 text-xs text-gray-400">
+                            Note: Gunakan Link Public  
+                        </p>
+                    </div>
+
+                    {{-- Preview --}}
+                    <div id="preview-container" class="hidden">
+                        <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Preview Thumbnail:</p>
+                        <div class="relative w-fit">
+                            <img id="image-preview" src="" alt="Preview Thumbnail"
+                                class="w-56 h-36 object-cover rounded-xl border border-gray-200 shadow-sm">
+                            <button type="button" onclick="clearPreview()"
+                                class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 text-xs font-bold hover:bg-red-600 transition-colors flex items-center justify-center">
+                                ✕
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="pt-4">
@@ -108,30 +143,94 @@
     </div>
 
     <script>
-        function previewImage(event) {
+        // ── Tab Switching ──────────────────────────────────────────
+        function switchTab(tab) {
+            const isUpload = tab === 'upload';
+
+            // Tab button styles
+            document.getElementById('tab-upload').className = isUpload
+                ? 'px-5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 bg-white text-indigo-600 shadow-sm'
+                : 'px-5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 text-gray-500 hover:text-gray-700';
+            document.getElementById('tab-url').className = !isUpload
+                ? 'px-5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 bg-white text-indigo-600 shadow-sm'
+                : 'px-5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 text-gray-500 hover:text-gray-700';
+
+            // Panel visibility
+            document.getElementById('panel-upload').classList.toggle('hidden', !isUpload);
+            document.getElementById('panel-url').classList.toggle('hidden', isUpload);
+
+            // Disable inactive inputs so they don't interfere with validation
+            document.getElementById('thumbnail').disabled = !isUpload;
+            document.getElementById('thumbnail_url').disabled = isUpload;
+
+            // Clear preview when switching
+            clearPreview();
+        }
+
+        // ── Preview from local file ────────────────────────────────
+        function previewFromFile(event) {
             const input = event.target;
-            const previewContainer = document.getElementById('preview-container');
-            const previewImage = document.getElementById('image-preview');
+            const fileName = document.getElementById('file-name');
 
-            // Cek apakah ada file yang dipilih
             if (input.files && input.files[0]) {
+                fileName.textContent = input.files[0].name;
+                fileName.classList.remove('italic', 'text-gray-400');
+                fileName.classList.add('text-gray-700', 'font-medium');
+
                 const reader = new FileReader();
-
-                // Ketika file selesai dibaca
                 reader.onload = function(e) {
-                    // Masukkan data gambar ke tag <img>
-                    previewImage.src = e.target.result;
-                    // Hapus class 'hidden' agar gambar dan labelnya muncul
-                    previewContainer.classList.remove('hidden');
-                }
-
-                // Baca file sebagai URL data
+                    showPreview(e.target.result);
+                };
                 reader.readAsDataURL(input.files[0]);
             } else {
-                // Jika user batal memilih gambar, sembunyikan lagi
-                previewImage.src = "";
-                previewContainer.classList.add('hidden');
+                fileName.textContent = 'Belum ada file dipilih';
+                fileName.classList.add('italic', 'text-gray-400');
+                fileName.classList.remove('text-gray-700', 'font-medium');
+                clearPreview();
             }
         }
+
+        // ── Preview from URL ───────────────────────────────────────
+        function previewFromUrl(url) {
+            if (url && url.trim() !== '') {
+                showPreview(url.trim());
+            } else {
+                clearPreview();
+            }
+        }
+
+        // ── Helpers ────────────────────────────────────────────────
+        function showPreview(src) {
+            const img = document.getElementById('image-preview');
+            const container = document.getElementById('preview-container');
+            img.src = src;
+            container.classList.remove('hidden');
+        }
+
+        function clearPreview() {
+            const img = document.getElementById('image-preview');
+            const container = document.getElementById('preview-container');
+            img.src = '';
+            container.classList.add('hidden');
+
+            // Also reset file input & label
+            const fileInput = document.getElementById('thumbnail');
+            if (fileInput) fileInput.value = '';
+            const fileName = document.getElementById('file-name');
+            if (fileName) {
+                fileName.textContent = 'Belum ada file dipilih';
+                fileName.classList.add('italic', 'text-gray-400');
+                fileName.classList.remove('text-gray-700', 'font-medium');
+            }
+
+            // Also reset url input
+            const urlInput = document.getElementById('thumbnail_url');
+            if (urlInput) urlInput.value = '';
+        }
+
+        // Init: make sure URL input is disabled on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('thumbnail_url').disabled = true;
+        });
     </script>
 </x-app-layout>

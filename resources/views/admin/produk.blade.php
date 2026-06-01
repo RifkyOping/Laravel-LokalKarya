@@ -51,7 +51,7 @@
                     @forelse($produks as $produk)
                     <div class="bg-white border border-gray-100 rounded-2xl shadow-sm p-4 sm:p-5">
                         <div class="flex items-start gap-3 sm:gap-4">
-                            <img src="{{ $produk->gambar_produk ? asset('storage/' . $produk->gambar_produk) : 'https://placehold.co/150x150/e2e8f0/64748b?text=No+Image' }}"
+                            <img src="{{ produk_image_url($produk->gambar_produk, 'https://placehold.co/150x150/e2e8f0/64748b?text=No+Image') }}"
                                 alt="Thumbnail"
                                 class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border border-gray-100 shadow-sm shrink-0">
 
