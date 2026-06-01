@@ -15,7 +15,7 @@
                 class="p-8 bg-white shadow-sm border border-gray-100 rounded-[2rem] flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div class="flex items-center gap-6">
                     <img src="{{ Auth::user()->sellerProfile && Auth::user()->sellerProfile->foto ? asset('storage/' . Auth::user()->sellerProfile->foto) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name ?? 'Kreator') . '&background=1f2937&color=fff&size=200' }}"
-                        class="w-20 h-20 rounded-[1.25rem] object-cover shadow-sm border-2 border-white">
+                        loading="lazy" class="w-20 h-20 rounded-[1.25rem] object-cover shadow-sm border-2 border-white">
                     <div>
                         <h3 class="text-2xl font-extrabold text-gray-900 flex items-center gap-1.5">
                             {{ Auth::user()->name ?? 'Seller' }}

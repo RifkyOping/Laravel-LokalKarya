@@ -7,9 +7,29 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class ProdukController extends Controller
 {
+    /**
+     * Simpan gambar upload: resize ke max 800px, konversi ke WebP 80%.
+     */
+    private function processAndStoreImage($file): string
+    {
+        $manager  = new ImageManager(new Driver());
+        $image    = $manager->read($file->getRealPath());
+
+        // Resize hanya jika lebar > 800px, tinggi proporsional
+        $image->scaleDown(width: 800);
+
+        $webpData = $image->toWebp(80)->toString();
+        $filename = 'thumbnails/' . uniqid('img_', true) . '.webp';
+
+        Storage::disk('public')->put($filename, $webpData);
+
+        return $filename;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -49,11 +69,11 @@ class ProdukController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'          => 'required|string|max:255',
-            'category'      => 'required|string',
-            'price'         => 'required|numeric|min:0',
-            'description'   => 'required|string',
-            'thumbnail'     => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'name' => 'required|string|max:255',
+            'category' => 'required|string',
+            'price' => 'required|numeric|min:0',
+            'description' => 'required|string',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'thumbnail_url' => 'nullable|url|max:2048',
         ]);
 
@@ -64,20 +84,20 @@ class ProdukController extends Controller
 
         $thumbnailPath = null;
         if ($request->hasFile('thumbnail')) {
-            // Upload file lokal ke storage
-            $thumbnailPath = $request->file('thumbnail')->store('thumbnails', 'public');
+            // Proses: resize 800px + konversi ke WebP 80%
+            $thumbnailPath = $this->processAndStoreImage($request->file('thumbnail'));
         } elseif ($request->thumbnail_url) {
             // Simpan URL langsung ke database
             $thumbnailPath = $request->thumbnail_url;
         }
 
         $produk = new Produk();
-        $produk->nama_produk       = $request->name;
-        $produk->kategori          = $request->category;
-        $produk->harga             = $request->price;
-        $produk->deskripsi         = $request->description;
-        $produk->gambar_produk     = $thumbnailPath;
-        $produk->user_id           = Auth::id();
+        $produk->nama_produk = $request->name;
+        $produk->kategori = $request->category;
+        $produk->harga = $request->price;
+        $produk->deskripsi = $request->description;
+        $produk->gambar_produk = $thumbnailPath;
+        $produk->user_id = Auth::id();
         $produk->status_verifikasi = 'menunggu';
         $produk->save();
 
@@ -119,27 +139,30 @@ class ProdukController extends Controller
         }
 
         $request->validate([
-            'name'        => 'required|string|max:255',
-            'category'    => 'required|string',
-            'price'       => 'required|numeric|min:0',
+            'name' => 'required|string|max:255',
+            'category' => 'required|string',
+            'price' => 'required|numeric|min:0',
             'description' => 'required|string',
-            'thumbnail'   => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', 
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
         $produk->nama_produk = $request->name;
-        $produk->kategori    = $request->category;
-        $produk->harga       = $request->price;
-        $produk->deskripsi   = $request->description;
+        $produk->kategori = $request->category;
+        $produk->harga = $request->price;
+        $produk->deskripsi = $request->description;
 
         $produk->status_verifikasi = 'menunggu';
 
         if ($request->hasFile('thumbnail')) {
-            
-            if ($produk->gambar_produk && Storage::disk('public')->exists($produk->gambar_produk)) {
+            // Hapus gambar lama jika bukan URL eksternal
+            if ($produk->gambar_produk
+                && !str_starts_with($produk->gambar_produk, 'http')
+                && Storage::disk('public')->exists($produk->gambar_produk)) {
                 Storage::disk('public')->delete($produk->gambar_produk);
             }
 
-            $produk->gambar_produk = $request->file('thumbnail')->store('thumbnails', 'public');
+            // Proses: resize 800px + konversi ke WebP 80%
+            $produk->gambar_produk = $this->processAndStoreImage($request->file('thumbnail'));
         }
 
         $produk->save();
