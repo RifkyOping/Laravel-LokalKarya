@@ -37,7 +37,7 @@
                     <div class="bg-white p-5 sm:p-8 rounded-3xl border border-gray-100 shadow-sm relative mb-6 sm:mb-10">
                         <div class="flex items-center gap-4">
                             <img src="{{ Auth::user()->sellerProfile && Auth::user()->sellerProfile->foto ? asset('storage/' . Auth::user()->sellerProfile->foto) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name ?? 'Seller') . '&background=2563eb&color=fff&size=200' }}"
-                                class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl shadow-lg shadow-blue-600/10 border-2 border-white object-cover shrink-0">
+                                loading="lazy" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl shadow-lg shadow-blue-600/10 border-2 border-white object-cover shrink-0">
 
                             <div class="flex-1 min-w-0">
                                 <h3 class="text-lg sm:text-2xl font-extrabold text-gray-900 flex items-center gap-1.5 flex-wrap">
@@ -67,7 +67,7 @@
                             class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col group hover:border-blue-200 hover:shadow-md transition-all">
                             <div class="h-36 sm:h-44 overflow-hidden relative">
                                 <img src="{{ produk_image_url($produk->gambar_produk, 'https://placehold.co/600x400/e2e8f0/64748b?text=No+Image') }}"
-                                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                    loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                                 <span class="absolute top-2 left-2 text-[10px] font-bold uppercase bg-white/90 text-blue-600 px-2 py-0.5 rounded-lg">
                                     {{ ucwords(str_replace('-', ' ', $produk->kategori)) }}
                                 </span>

@@ -73,7 +73,7 @@
                                 @foreach($section['items'] as $produk)
                                 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex gap-3">
                                     <img src="{{ produk_image_url($produk->gambar_produk, 'https://placehold.co/150x150/e2e8f0/64748b?text=No+Image') }}"
-                                        class="w-16 h-16 rounded-xl object-cover border border-gray-100 shrink-0">
+                                        alt="Thumbnail" loading="lazy" class="w-16 h-16 rounded-xl object-cover border border-gray-100 shrink-0">
                                     <div class="flex-1 min-w-0">
                                         <div class="flex items-start justify-between gap-2 mb-1">
                                             <h4 class="font-bold text-gray-900 text-sm leading-snug line-clamp-2 flex-1">{{ $produk->nama_produk }}</h4>
@@ -121,7 +121,7 @@
                                                 <td class="px-5 py-4">
                                                     <div class="flex items-center gap-3">
                                                         <img src="{{ produk_image_url($produk->gambar_produk, 'https://placehold.co/150x150/e2e8f0/64748b?text=No+Image') }}"
-                                                            class="w-11 h-11 rounded-xl object-cover border border-gray-100 shrink-0">
+                                                            alt="Thumbnail" loading="lazy" class="w-11 h-11 rounded-xl object-cover border border-gray-100 shrink-0">
                                                         <span class="font-bold text-gray-900 text-sm line-clamp-2 max-w-[200px]">{{ $produk->nama_produk }}</span>
                                                     </div>
                                                 </td>
