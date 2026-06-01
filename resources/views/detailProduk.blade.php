@@ -18,10 +18,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex items-center gap-2">
-                    <div
-                        class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">
-                        L</div>
-                    <span class="font-extrabold text-xl tracking-tight">LOKALKARYA</span>
+                    <x-logo />
                 </div>
 
                 <nav class="flex space-x-8">
