@@ -22,8 +22,7 @@
         <!-- Logo Section -->
         <div class="animate-fade-in-up">
             <a href="{{ url('/') }}" class="flex items-center gap-2 mb-8 group">
-                <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-2xl shadow-xl shadow-blue-600/20 group-hover:scale-110 transition-transform">L</div>
-                <span class="font-extrabold text-2xl tracking-tight">LOKALKARYA</span>
+                <x-logo class="h-14 w-auto object-contain" />
             </a>
         </div>
 

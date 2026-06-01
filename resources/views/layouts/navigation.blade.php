@@ -17,8 +17,7 @@
     <!-- Sidebar Header -->
     <div class="flex items-center justify-between px-6 pt-6 pb-4 border-b border-gray-50">
         <div class="flex items-center gap-3">
-            <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-blue-600/20">L</div>
-            <span class="font-extrabold text-xl tracking-tight text-gray-900 uppercase">Lokalkarya</span>
+            <x-logo class="h-11 w-auto object-contain" />
         </div>
         <button @click="sidebarOpen = false"
             class="lg:hidden w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-xl transition-all">
@@ -28,17 +27,6 @@
         </button>
     </div>
 
-    <!-- User Badge (Mobile only) -->
-    <div class="lg:hidden px-4 py-3 mx-4 mt-4 bg-blue-50 rounded-2xl">
-        <div class="flex items-center gap-3">
-            <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name ?? 'User') }}&background=2563eb&color=fff&size=80"
-                class="w-10 h-10 rounded-xl object-cover" alt="avatar">
-            <div>
-                <p class="font-bold text-gray-900 text-sm truncate max-w-[160px]">{{ Auth::user()->name ?? 'User' }}</p>
-                <p class="text-xs text-blue-600 font-semibold capitalize">{{ Auth::user()->role ?? 'user' }}</p>
-            </div>
-        </div>
-    </div>
 
     <!-- Navigation Links -->
     <nav class="flex-1 px-4 py-4 space-y-1 overflow-y-auto">
@@ -219,10 +207,6 @@
 
 </nav>
 
-{{-- ═══════════════════════════════════════════════════════════════
-     GLOBAL DELETE CONFIRMATION MODAL
-     Usage: onclick="openDeleteModal(formAction, title, description)"
-     ═══════════════════════════════════════════════════════════════ --}}
 <div id="delete-modal"
      class="fixed inset-0 z-[999] flex items-center justify-center px-4"
      style="display:none!important;"
