@@ -11,7 +11,9 @@
     <div class="py-8">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            <form action="{{ route('seller.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+            <form id="form-tambah-produk" action="{{ route('seller.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6"
+                  data-persist
+                  data-persist-message="Data jasa/produk yang sudah kamu isi sebelumnya telah dipulihkan. Silakan periksa kembali.">
                 @csrf
 
                 @if ($errors->any())
@@ -228,9 +230,19 @@
             if (urlInput) urlInput.value = '';
         }
 
-        // Init: make sure URL input is disabled on page load
+        // Init: pastikan input URL disabled saat halaman dimuat
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('thumbnail_url').disabled = true;
+
+            // Setelah form-persist memulihkan data, cek apakah thumbnail_url terisi
+            // Jika iya, otomatis pindah ke tab URL dan tampilkan preview
+            setTimeout(function() {
+                var urlInput = document.getElementById('thumbnail_url');
+                if (urlInput && urlInput.value.trim() !== '') {
+                    switchTab('url');
+                    previewFromUrl(urlInput.value.trim());
+                }
+            }, 800);
         });
     </script>
 </x-app-layout>

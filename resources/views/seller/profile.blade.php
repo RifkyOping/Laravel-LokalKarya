@@ -62,7 +62,9 @@
                         @include('profile.partials.update-profile-information-form')
                     </div>
                     <div class="p-8 bg-white shadow-sm border border-gray-100 rounded-[2rem]">
-                        <form action="{{ route('seller.profile.details') }}" method="POST" class="space-y-6">
+                        <form id="form-seller-details" action="{{ route('seller.profile.details') }}" method="POST" class="space-y-6"
+                              data-persist
+                              data-persist-message="Perubahan profil kamu sebelumnya telah dipulihkan. Jangan lupa simpan!">
                             @csrf
                             @method('PATCH')
 
@@ -129,8 +131,10 @@
                             @endif
                         </div>
 
-                        <form action="{{ route('seller.portfolio.add') }}" method="POST"
-                            class="mb-8 flex flex-col sm:flex-row gap-3 bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                        <form id="form-portfolio-tambah" action="{{ route('seller.portfolio.add') }}" method="POST"
+                            class="mb-8 flex flex-col sm:flex-row gap-3 bg-gray-50 p-4 rounded-2xl border border-gray-100"
+                            data-persist
+                            data-persist-message="Judul dan link karya yang kamu isi sebelumnya telah dipulihkan.">
                             @csrf
                             <div class="flex-1 flex flex-col">
                                 <input type="text" name="judul_karya" value="{{ old('judul_karya') }}"
@@ -222,7 +226,9 @@
                     <div class="p-8 bg-white shadow-sm border border-gray-100 rounded-[2rem] sticky top-28">
                         <h2 class="text-xl font-extrabold text-gray-900 mb-6">Kontak</h2>
 
-                        <form id="form-whatsapp" action="{{ route('seller.whatsapp.update') }}" method="POST" class="space-y-6">
+                        <form id="form-whatsapp" action="{{ route('seller.whatsapp.update') }}" method="POST" class="space-y-6"
+                              data-persist
+                              data-persist-message="Nomor WhatsApp yang kamu isi sebelumnya telah dipulihkan.">
                             @csrf
                             @method('PATCH')
 

@@ -6,30 +6,25 @@ use App\Models\Produk;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageManager;
-use Intervention\Image\Drivers\Gd\Driver;
 
 class ProdukController extends Controller
 {
     /**
-     * Simpan gambar upload: resize ke max 800px, konversi ke WebP 80%.
+     * Simpan gambar upload menggunakan metode native yang ringan.
+     * Sangat aman untuk shared hosting dengan limit memori rendah.
      */
     private function processAndStoreImage($file): string
     {
-        $manager  = new ImageManager(new Driver());
-        $image    = $manager->read($file->getRealPath());
+        // 1. Buat nama file unik agar tidak bentrok
+        $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
 
-        // Resize hanya jika lebar > 800px, tinggi proporsional
-        $image->scaleDown(width: 800);
+        // 2. Pindahkan file langsung ke folder public/storage/produks
+        $file->move(public_path('storage/produks'), $filename);
 
-        $webpData = $image->toWebp(80)->toString();
-        $filename = 'thumbnails/' . uniqid('img_', true) . '.webp';
-
-        Storage::disk('public')->put($filename, $webpData);
-
-        return $filename;
+        // 3. Kembalikan path untuk disimpan di database
+        return 'produks/' . $filename;
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -84,7 +79,7 @@ class ProdukController extends Controller
 
         $thumbnailPath = null;
         if ($request->hasFile('thumbnail')) {
-            // Proses: resize 800px + konversi ke WebP 80%
+            // Proses upload ringan
             $thumbnailPath = $this->processAndStoreImage($request->file('thumbnail'));
         } elseif ($request->thumbnail_url) {
             // Simpan URL langsung ke database
@@ -154,14 +149,15 @@ class ProdukController extends Controller
         $produk->status_verifikasi = 'menunggu';
 
         if ($request->hasFile('thumbnail')) {
-            // Hapus gambar lama jika bukan URL eksternal
-            if ($produk->gambar_produk
-                && !str_starts_with($produk->gambar_produk, 'http')
-                && Storage::disk('public')->exists($produk->gambar_produk)) {
-                Storage::disk('public')->delete($produk->gambar_produk);
+            // Hapus gambar lama secara fisik (lebih aman)
+            if ($produk->gambar_produk && !str_starts_with($produk->gambar_produk, 'http')) {
+                $oldImagePath = public_path('storage/' . $produk->gambar_produk);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
             }
 
-            // Proses: resize 800px + konversi ke WebP 80%
+            // Proses upload gambar baru
             $produk->gambar_produk = $this->processAndStoreImage($request->file('thumbnail'));
         }
 
@@ -179,8 +175,12 @@ class ProdukController extends Controller
             abort(403, 'Anda tidak memiliki akses untuk menghapus produk ini.');
         }
 
-        if ($produk->gambar_produk && Storage::disk('public')->exists($produk->gambar_produk)) {
-            Storage::disk('public')->delete($produk->gambar_produk);
+        // Hapus file gambar secara fisik dari hosting
+        if ($produk->gambar_produk && !str_starts_with($produk->gambar_produk, 'http')) {
+            $imagePath = public_path('storage/' . $produk->gambar_produk);
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
         }
 
         $produk->delete();

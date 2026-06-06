@@ -64,7 +64,9 @@
                                     <span class="w-7 h-7 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center text-sm">+</span>
                                     Tambah Kategori
                                 </h3>
-                                <form action="{{ route('admin.kategori.store') }}" method="POST" class="space-y-4">
+                                <form id="form-tambah-kategori" action="{{ route('admin.kategori.store') }}" method="POST" class="space-y-4"
+                                      data-persist
+                                      data-persist-message="Data kategori yang sudah kamu isi sebelumnya telah dipulihkan.">
                                     @csrf
                                     <div>
                                         <label class="block text-[13px] font-bold text-gray-700 mb-1.5">Nama Kategori</label>

@@ -109,19 +109,6 @@
 
     <!-- Hero Section -->
     <section class="py-8 sm:py-14 text-center max-w-4xl mx-auto px-4 animate-fade-in-up">
-        <div
-            class="inline-block bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold tracking-wide mb-4">
-            ✨ Platform Jasa Kreatif Mahasiswa Universitas Sulawesi Barat
-        </div>
-
-        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-4 leading-tight">
-            Dari Mahasiswa <br class="sm:hidden"> untuk <span class="text-blue-600">Sulawesi Barat</span>
-        </h1>
-
-        <p class="text-sm sm:text-base text-gray-500 mb-6 max-w-xl mx-auto leading-relaxed">
-            Temukan jasa desain, UI/UX, video editing, fotografi, dan karya kreatif dari mahasiswa berbakat Sulawesi
-            Barat.
-        </p>
 
         <!-- Search Bar - Mobile optimized -->
         <form action="{{ route('home') }}" method="GET" class="max-w-2xl mx-auto mb-6">
@@ -240,8 +227,6 @@
                     </div>
                     <h3 class="text-sm font-bold text-gray-900 mb-1">Tidak ada produk</h3>
                     <p class="text-xs text-gray-500">Belum ada jasa yang sesuai pencarian Anda.</p>
-                    <a href="{{ route('home') }}"
-                        class="inline-block mt-4 text-xs font-bold text-blue-600 hover:text-blue-700">Lihat semua →</a>
                 </div>
             @endforelse
         </div>

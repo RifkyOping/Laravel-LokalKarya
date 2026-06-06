@@ -33,7 +33,9 @@
                 <p class="text-sm text-gray-500 mt-2">Daftar untuk mulai menjual atau menemukan karya kreatif.</p>
             </div>
 
-            <form method="POST" action="{{ route('register') }}" class="space-y-6">
+            <form id="form-register" method="POST" action="{{ route('register') }}" class="space-y-6"
+                  data-persist
+                  data-persist-message="Nama dan email yang sudah kamu isi sebelumnya telah dipulihkan.">
                 @csrf
 
                 <!-- Name -->

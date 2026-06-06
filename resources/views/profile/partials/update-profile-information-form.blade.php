@@ -12,9 +12,11 @@
         @csrf
     </form>
 
-    <form method="post" 
-          action="{{ auth()->user()->role == 'admin' ? route('profile.update') : route('update.seller') }}" 
-          class="space-y-6">
+    <form id="form-info-dasar" method="post"
+          action="{{ auth()->user()->role == 'admin' ? route('profile.update') : route('update.seller') }}"
+          class="space-y-6"
+          data-persist
+          data-persist-message="Informasi dasar yang kamu ubah sebelumnya telah dipulihkan. Jangan lupa simpan!">
         @csrf
         @method('patch')
 
