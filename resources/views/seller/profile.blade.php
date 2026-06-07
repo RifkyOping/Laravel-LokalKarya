@@ -1,4 +1,5 @@
 <x-app-layout>
+
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
@@ -11,8 +12,43 @@
     <div class="py-8">
         <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
 
-            <div
-                class="p-8 bg-white shadow-sm border border-gray-100 rounded-[2rem] flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            {{-- Banner peringatan saat redirect dari halaman buat produk --}}
+            @if(session('warning'))
+                <div class="p-4 bg-amber-50 border border-amber-200 rounded-2xl flex items-start gap-3 text-amber-800 animate-pulse-once">
+                    <svg class="w-5 h-5 shrink-0 mt-0.5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+                    </svg>
+                    <div>
+                        <p class="font-bold text-sm">{{ session('warning') }}</p>
+                        <p class="text-xs text-amber-600 mt-1">Silakan isi semua kolom yang bertanda <span class="font-bold text-red-500">*</span> di bawah ini, lalu simpan.</p>
+                    </div>
+                </div>
+            @endif
+
+            {{-- Indikator profil belum lengkap (selalu tampil jika belum lengkap) --}}
+            @if(!Auth::user()->isProfileComplete())
+                <div class="p-4 bg-blue-50 border border-blue-200 rounded-2xl flex items-start gap-3 text-blue-800">
+                    <svg class="w-5 h-5 shrink-0 mt-0.5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <div>
+                        <p class="font-bold text-sm">Profil Anda belum lengkap</p>
+                        <p class="text-xs text-blue-600 mt-1">Lengkapi data berikut agar dapat membuat produk:
+                            @php
+                                $profile = Auth::user()->sellerProfile;
+                                $missing = [];
+                                if (!$profile || empty($profile->nomor_whatsapp)) $missing[] = 'Nomor WhatsApp';
+                                if (!$profile || empty($profile->alamat)) $missing[] = 'Alamat';
+                                if (!$profile || empty($profile->bidang_keahlian)) $missing[] = 'Bidang Keahlian';
+                                if (!$profile || empty($profile->deskripsi)) $missing[] = 'Tentang Saya';
+                            @endphp
+                            <span class="font-bold">{{ implode(', ', $missing) }}</span>
+                        </p>
+                    </div>
+                </div>
+            @endif
+
+            <div class="p-8 bg-white shadow-sm border border-gray-100 rounded-[2rem] flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div class="flex items-center gap-6">
                     <img src="{{ Auth::user()->sellerProfile && Auth::user()->sellerProfile->foto ? asset('storage/' . Auth::user()->sellerProfile->foto) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->name ?? 'Kreator') . '&background=1f2937&color=fff&size=200' }}"
                         loading="lazy" class="w-20 h-20 rounded-[1.25rem] object-cover shadow-sm border-2 border-white">
@@ -61,6 +97,7 @@
                     <div class="p-8 bg-white shadow-sm border border-gray-100 rounded-[2rem]">
                         @include('profile.partials.update-profile-information-form')
                     </div>
+                    
                     <div class="p-8 bg-white shadow-sm border border-gray-100 rounded-[2rem]">
                         <form action="{{ route('seller.profile.details') }}" method="POST" class="space-y-6">
                             @csrf
@@ -68,7 +105,7 @@
 
                             <div>
                                 <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
-                                    Bidang Keahlian
+                                    Bidang Keahlian <span class="text-red-500">*</span>
                                 </label>
                                 <input type="text" name="bidang_keahlian"
                                     value="{{ old('bidang_keahlian', Auth::user()->sellerProfile->bidang_keahlian ?? '') }}"
@@ -81,19 +118,25 @@
 
                             <div>
                                 <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
-                                    Alamat Lengkap
+                                    Alamat Lengkap / Link Maps <span class="text-red-500">*</span>
                                 </label>
-                                <textarea name="alamat" rows="2"
-                                    placeholder="Masukkan detail alamat, kota, dan provinsi..."
-                                    class="mt-1 block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm resize-none">{{ old('alamat', Auth::user()->sellerProfile->alamat ?? '') }}</textarea>
+                                
+                                <div class="mb-3">
+                                    <input type="text" id="alamat-input" name="alamat"
+                                        value="{{ old('alamat', Auth::user()->sellerProfile->alamat ?? '') }}"
+                                        placeholder="Masukkan alamat manual atau paste link Google Maps..."
+                                        class="mt-1 block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm text-sm">
+                                </div>
+                                <p class="text-xs text-gray-500">
+                                    Anda dapat memasukkan teks alamat manual atau <i>paste</i> tautan (link) dari Google Maps langsung.
+                                </p>
                                 @error('alamat')
-                                    <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+                                    <span class="text-red-500 text-xs mt-1 block mt-2">{{ $message }}</span>
                                 @enderror
                             </div>
-
                             <div>
                                 <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
-                                    Tentang Saya
+                                    Tentang Saya <span class="text-red-500">*</span>
                                 </label>
                                 <textarea name="tentang_saya" rows="3" placeholder="Ceritakan tentang diri Anda..."
                                     class="mt-1 block w-full rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 shadow-sm resize-none">{{ old('tentang_saya', Auth::user()->sellerProfile->deskripsi ?? '') }}</textarea>
@@ -228,7 +271,7 @@
 
                             <div>
                                 <label
-                                    class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">WhatsApp</label>
+                                    class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">WhatsApp <span class="text-red-500">*</span></label>
 
                                 <input type="text" id="input-whatsapp" name="nomor_whatsapp"
                                     value="{{ old('nomor_whatsapp', Auth::user()->sellerProfile->nomor_whatsapp ?? '') }}"
@@ -257,8 +300,6 @@
                                     <span class="text-sm text-green-600 text-center font-medium mt-2 ml-6">Tersimpan!</span>
                                 @endif
                             </div>
-
-
                         </form>
 
                         <script>
@@ -282,4 +323,5 @@
             </div>
         </div>
     </div>
+
 </x-app-layout>

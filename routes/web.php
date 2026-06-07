@@ -28,8 +28,8 @@ Route::middleware(['auth', 'role:seller'])->group(function () {
     Route::get('/seller/dashboard', [SellerController::class, 'index'])->name('seller.dashboard');
 
     Route::get('/seller/produk', [ProdukController::class, 'index'])->name('produk.seller');
-    Route::get('/seller/produk/create', [ProdukController::class, 'create'])->name('seller.create');
-    Route::post('/seller/produk', [ProdukController::class, 'store'])->name('seller.store');
+    Route::get('/seller/produk/create', [ProdukController::class, 'create'])->name('seller.create')->middleware('profile.complete');
+    Route::post('/seller/produk', [ProdukController::class, 'store'])->name('seller.store')->middleware('profile.complete');
     Route::get('/seller/produk/{produk}/edit', [ProdukController::class, 'edit'])->name('seller.edit');
     Route::put('/seller/produk/{produk}', [ProdukController::class, 'update'])->name('seller.update');
     Route::delete('/seller/produk/{produk}', [ProdukController::class, 'destroy'])->name('produk.destroy');

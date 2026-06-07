@@ -153,22 +153,43 @@
                             </div>
                         @endif
 
-                        <div class="flex flex-wrap gap-2 mb-6">
-                            <span
-                                class="px-3 py-1.5 bg-gray-50 border border-gray-100 text-gray-600 rounded-full text-xs font-bold">{{ $produk->kategori }}</span>
-                        </div>
+                        @if($produk->user->sellerProfile && $produk->user->sellerProfile->alamat)
+                            @php
+                                $alamatUser = $produk->user->sellerProfile->alamat;
+                                $isUrl = filter_var($alamatUser, FILTER_VALIDATE_URL) || str_starts_with($alamatUser, 'http://') || str_starts_with($alamatUser, 'https://');
+                                $mapsLink = $isUrl ? $alamatUser : 'https://www.google.com/maps/search/?api=1&query=' . urlencode($alamatUser);
+                            @endphp
+                            <div class="mb-6">
+                                <a href="{{ $mapsLink }}"
+                                   target="_blank"
+                                   class="flex items-center gap-3 p-4 rounded-xl bg-gray-50 hover:bg-indigo-50 border border-gray-100 hover:border-indigo-200 transition-colors group cursor-pointer text-left">
+                                    <div class="bg-white p-2 rounded-lg shadow-sm border border-gray-100 group-hover:border-indigo-200 shrink-0">
+                                        <svg class="w-5 h-5 text-gray-500 group-hover:text-indigo-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                                        </svg>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h4 class="text-sm font-bold text-gray-900 group-hover:text-indigo-700 transition-colors mb-0.5">Alamat Lokasi</h4>
+                                        <p class="text-xs text-indigo-600 font-bold inline-flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
+                                            Buka di Google Maps &rarr;
+                                        </p>
+                                    </div>
+                                </a>
+                            </div>
+                        @endif
 
-                        <div class="space-y-3">
+                        <div class="flex flex-col gap-3">
                             <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $produk->user->sellerProfile->nomor_whatsapp ?? '') }}?text=Halo%20{{ urlencode($produk->user->name) }},%20saya%20tertarik%20dengan%20jasa/produk%20{{ urlencode($produk->nama_produk) }}%20di%20LOKALKARYA."
                                 target="_blank"
-                                class="w-full flex items-center justify-center gap-2 bg-white hover:bg-green-600 hover:text-white text-black px-6 py-3.5 rounded-xl font-bold text-sm shadow-md shadow-gray-200/50 transition-all hover:-translate-y-0.5 active:scale-95 border border-gray-100">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 16 16">
-                                    <path
-                                        d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232" />
+                                class="w-full flex items-center justify-center gap-2 bg-white hover:bg-green-600 hover:text-white text-black px-4 py-3.5 rounded-xl font-bold text-sm shadow-md shadow-gray-200/50 transition-all hover:-translate-y-0.5 active:scale-95 border border-gray-100">
+                                <svg class="w-5 h-5 shrink-0" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232" />
                                 </svg>
-                                Diskusikan via WhatsApp
+                                <span>WhatsApp</span>
                             </a>
                         </div>
+
                     </div>
                 </div>
 

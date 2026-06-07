@@ -35,4 +35,22 @@ class User extends Authenticatable
     {
         return $this->hasOne(SellerProfile::class);
     }
+
+    /**
+     * Cek apakah profil seller sudah lengkap.
+     * Field wajib: nomor_whatsapp, alamat, bidang_keahlian, deskripsi
+     */
+    public function isProfileComplete(): bool
+    {
+        $profile = $this->sellerProfile;
+
+        if (!$profile) {
+            return false;
+        }
+
+        return !empty(trim($profile->nomor_whatsapp ?? ''))
+            && !empty(trim($profile->alamat ?? ''))
+            && !empty(trim($profile->bidang_keahlian ?? ''))
+            && !empty(trim($profile->deskripsi ?? ''));
+    }
 }

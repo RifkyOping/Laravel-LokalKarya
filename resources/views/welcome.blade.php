@@ -251,7 +251,6 @@
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
         <div
             class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-8 sm:p-12 md:p-16 text-center text-white shadow-2xl shadow-blue-600/20">
-            <div class="text-3xl sm:text-4xl mb-3">🚀</div>
             <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-3">Dapatkan Klien Pertamamu</h2>
             <p class="text-blue-100 max-w-lg mx-auto mb-6 text-sm leading-relaxed">
                 Buat profil, upload karyamu, dan mulai mendapatkan penghasilan dari keahlian kreatifmu.
