@@ -14,13 +14,12 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');           // Nama tampilan, misal: "Desain Publikasi"
-            $table->string('slug')->unique(); // Nilai value, misal: "desain-publikasi"
+            $table->string('nama');           
+            $table->string('slug')->unique(); 
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
 
-        // Seed kategori default (sesuai dengan hardcode di create.blade.php)
         $defaults = [
             ['nama' => 'Desain Publikasi', 'slug' => 'desain-publikasi'],
             ['nama' => 'UI Design',        'slug' => 'ui-design'],
