@@ -111,7 +111,7 @@
     <section class="py-8 sm:py-14 text-center max-w-4xl mx-auto px-4 animate-fade-in-up">
         <div
             class="inline-block bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold tracking-wide mb-4">
-            ✨ Platform Jasa Kreatif Mahasiswa Universitas Sulawesi Barat
+            Platform Jasa Kreatif Mahasiswa Universitas Sulawesi Barat
         </div>
 
         <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-4 leading-tight">

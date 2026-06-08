@@ -30,7 +30,7 @@ class AdminController extends Controller
                 return [
                     'tipe' => 'seller',
                     'judul' => 'Pengguna Baru Mendaftar',
-                    'deskripsi' => $user->name . ' mendaftar sebagai kreator baru.',
+                    'deskripsi' => $user->name . ' mendaftar sebagai Seller baru.',
                     'waktu' => $user->created_at,
                 ];
             });
@@ -40,7 +40,7 @@ class AdminController extends Controller
             ->take(5)
             ->get()
             ->map(function ($produk) {
-                $sellerName = $produk->user ? $produk->user->name : 'Kreator';
+                $sellerName = $produk->user ? $produk->user->name : 'Seller';
                 return [
                     'tipe' => 'produk',
                     'judul' => 'Jasa Baru Ditambahkan',

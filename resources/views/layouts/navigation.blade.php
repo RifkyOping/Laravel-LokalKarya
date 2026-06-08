@@ -17,7 +17,9 @@
     <!-- Sidebar Header -->
     <div class="flex items-center justify-between px-6 pt-6 pb-4 border-b border-gray-50">
         <div class="flex items-center gap-3">
-            <x-logo class="h-11 w-auto object-contain" />
+            <a href="{{ url('/') }}" class="flex items-center gap-3">
+                <x-logo class="h-11 w-auto object-contain" />
+            </a>
         </div>
         <button @click="sidebarOpen = false"
             class="lg:hidden w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-xl transition-all">
