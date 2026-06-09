@@ -262,6 +262,75 @@
         </div>
     </section>
 
+    <!-- Feedback Section -->
+    <section id="feedback" class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
+        <div class="bg-white rounded-3xl p-6 sm:p-10 border border-gray-100 shadow-xl shadow-blue-50/50 relative overflow-hidden">
+            <!-- Decorative circle -->
+            <div class="absolute -top-24 -right-24 w-48 h-48 bg-blue-50 rounded-full opacity-50 blur-2xl pointer-events-none"></div>
+
+            <div class="text-center mb-8 relative z-10">
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-2">Beri Kami Masukan</h2>
+                <p class="text-gray-500 text-sm">Bantu kami membuat LOKALKARYA menjadi lebih baik.</p>
+            </div>
+
+            @if(session('feedback_success'))
+                <div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-2xl flex items-center justify-center gap-3 text-green-700 animate-fade-in-up relative z-10">
+                    <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <span class="text-sm font-bold">{{ session('feedback_success') }}</span>
+                </div>
+            @endif
+
+            <form action="{{ route('feedback.store') }}#feedback" method="POST" class="space-y-5 max-w-2xl mx-auto relative z-10" x-data="{ rating: 5, hoverRating: 0 }">
+                @csrf
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block text-[13px] font-bold text-gray-700 mb-1.5">Nama <span class="text-red-500"></span></label>
+                        <input type="text" name="name" required placeholder="Nama Anda" class="block w-full rounded-xl border-gray-200 focus:border-blue-500 focus:ring-blue-500 shadow-sm text-sm py-3 transition-colors">
+                        @error('name') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
+                    </div>
+                    <div>
+                        <label class="block text-[13px] font-bold text-gray-700 mb-1.5">Email <span class="text-gray-400 font-normal"></span></label>
+                        <input type="email" name="email" placeholder="email@gmail.com" class="block w-full rounded-xl border-gray-200 focus:border-blue-500 focus:ring-blue-500 shadow-sm text-sm py-3 transition-colors">
+                        @error('email') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[13px] font-bold text-gray-700 mb-1.5 text-center">Penilaian <span class="text-red-500"></span></label>
+                    <div class="flex items-center justify-center gap-1 mb-1">
+                        <template x-for="i in 5">
+                            <button type="button" 
+                                @click="rating = i" 
+                                @mouseenter="hoverRating = i" 
+                                @mouseleave="hoverRating = 0"
+                                class="p-1 transition-transform hover:scale-110 focus:outline-none">
+                                <svg class="w-8 h-8 transition-colors" 
+                                     :class="(hoverRating >= i || (!hoverRating && rating >= i)) ? 'text-yellow-400' : 'text-gray-200'"
+                                     fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                            </button>
+                        </template>
+                    </div>
+                    <input type="hidden" name="rating" x-model="rating">
+                    @error('rating') <p class="text-red-500 text-xs text-center mt-1">{{ $message }}</p> @enderror
+                </div>
+
+                <div>
+                    <label class="block text-[13px] font-bold text-gray-700 mb-1.5">Pesan / Masukan <span class="text-red-500"></span></label>
+                    <textarea name="message" rows="4" required placeholder="Ceritakan pengalaman Anda atau saran perbaikan..." class="block w-full rounded-xl border-gray-200 focus:border-blue-500 focus:ring-blue-500 shadow-sm text-sm py-3 transition-colors resize-none"></textarea>
+                    @error('message') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
+                </div>
+
+                <div class="pt-2 text-center">
+                    <button type="submit" class="bg-gray-900 hover:bg-black text-white px-8 py-3 rounded-xl text-sm font-bold transition-all active:scale-95 shadow-md shadow-gray-900/20">
+                        Kirim Feedback
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer id="footer" class="bg-white border-t border-gray-100 pt-10 pb-8 mt-6">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

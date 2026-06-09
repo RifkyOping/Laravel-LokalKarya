@@ -99,6 +99,15 @@
                 Verifikasi Produk
             </a>
 
+            <a href="{{ route('admin.feedback') }}"
+                class="flex items-center gap-3 px-4 py-3.5 rounded-2xl font-semibold text-sm transition-all
+        {{ request()->routeIs('admin.feedback') ? 'text-blue-600 bg-blue-50 shadow-sm' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50' }}">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                </svg>
+                Feedback
+            </a>
+
             <a href="{{ route('profile.edit') }}"
                 class="flex items-center gap-3 px-4 py-3.5 rounded-2xl font-semibold text-sm transition-all
        {{ request()->routeIs('profile.edit') ? 'text-blue-600 bg-blue-50 shadow-sm' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50' }}">
@@ -196,6 +205,14 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6.429 9.75 2.25 12l4.179 2.25m0-4.5 5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L21.75 12l-4.179 2.25m0 0 4.179 2.25L12 21.75 2.25 16.5l4.179-2.25m11.142 0-5.571 3-5.571-3" />
                 </svg>
                 <span class="text-[10px] font-semibold">Produk</span>
+            </a>
+
+            <a href="{{ route('admin.feedback') }}"
+                class="flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-all {{ request()->routeIs('admin.feedback') ? 'text-blue-600' : 'text-gray-400' }}">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                </svg>
+                <span class="text-[10px] font-semibold">Feedback</span>
             </a>
 
             <button @click="sidebarOpen = true"

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\SellerProfileController;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('home');
 Route::get('/jasa/{id}', [WelcomeController::class, 'show'])->name('produk.detail');
+Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 
 Route::get('/dashboard', function () {
     $role = Auth::user()->role;
@@ -58,6 +60,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('/admin/kategori/{category}', [AdminController::class, 'updateKategori'])->name('admin.kategori.update');
     Route::patch('/admin/kategori/{category}/toggle', [AdminController::class, 'toggleKategori'])->name('admin.kategori.toggle');
     Route::delete('/admin/kategori/{category}', [AdminController::class, 'destroyKategori'])->name('admin.kategori.destroy');
+    Route::get('/admin/feedback', [AdminController::class, 'feedback'])->name('admin.feedback');
+    Route::patch('/admin/feedback/{feedback}/read', [AdminController::class, 'markFeedbackRead'])->name('admin.feedback.read');
+    Route::delete('/admin/feedback/{feedback}', [AdminController::class, 'destroyFeedback'])->name('admin.feedback.destroy');
 });
 
 Route::middleware('auth')->group(function () {
