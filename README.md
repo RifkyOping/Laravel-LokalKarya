@@ -1,7 +1,7 @@
 # 🚀 LOKALKARYA
 
 <p align="center">
-  <img src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Lokalkarya Banner" width="100%" style="border-radius: 20px; margin-bottom: 20px;" />
+  <img src="https://lokalkarya.page.gd/images/logo.png" alt="Lokalkarya Logo" width="100%" style="border-radius: 20px; margin-bottom: 20px;" />
 </p>
 
 <p align="center">
