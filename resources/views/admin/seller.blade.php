@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') . '?v=2' }}">
 </head>
 
 <body class="bg-gray-50 font-sans antialiased text-gray-900">
@@ -78,7 +79,7 @@
                                         <form action="{{ route('admin.seller.setujui', $seller->id) }}" method="POST">
                                             @csrf
                                             @method('PATCH')
-                                            <button type="submit" class="px-5 py-2 rounded-xl text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 transition-all active:scale-95">✓ Setujui</button>
+                                            <button type="submit" class="px-5 py-2 rounded-xl text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 transition-all active:scale-95">Verifikasi</button>
                                         </form>
                                     @elseif($seller->status_verifikasi === 'diterima')
                                         <form action="{{ route('admin.seller.tolak', $seller->id) }}" method="POST">
@@ -90,7 +91,7 @@
                                         <form action="{{ route('admin.seller.setujui', $seller->id) }}" method="POST">
                                             @csrf
                                             @method('PATCH')
-                                            <button type="submit" class="px-5 py-2 rounded-xl text-xs font-bold text-green-700 bg-green-50 hover:bg-green-100 transition-all active:scale-95">Setujui Kembali</button>
+                                            <button type="submit" class="px-5 py-2 rounded-xl text-xs font-bold text-green-700 bg-green-50 hover:bg-green-100 transition-all active:scale-95">Verifikasi Kembali</button>
                                         </form>
                                     @endif
 

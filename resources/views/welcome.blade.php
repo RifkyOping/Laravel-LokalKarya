@@ -34,6 +34,7 @@
             scrollbar-width: none;
         }
     </style>
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') . '?v=2' }}">
 </head>
 
 <body class="bg-gray-50 font-sans antialiased text-gray-900">

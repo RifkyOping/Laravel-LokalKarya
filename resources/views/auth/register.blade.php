@@ -16,6 +16,7 @@
             animation: fadeInUp 0.6s ease-out forwards;
         }
     </style>
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') . '?v=2' }}">
 </head>
 <body class="bg-gray-100 font-sans antialiased text-gray-900">
     <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 px-4">
