@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\SellerProfileController;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('home');
 Route::get('/jasa/{id}', [WelcomeController::class, 'show'])->name('produk.detail');
+Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 
 Route::get('/dashboard', function () {
     $role = Auth::user()->role;
@@ -23,13 +25,12 @@ Route::get('/dashboard', function () {
     return redirect('/');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// ─── Routes untuk Seller ─────────────────────────────────────────────
 Route::middleware(['auth', 'role:seller'])->group(function () {
     Route::get('/seller/dashboard', [SellerController::class, 'index'])->name('seller.dashboard');
 
     Route::get('/seller/produk', [ProdukController::class, 'index'])->name('produk.seller');
-    Route::get('/seller/produk/create', [ProdukController::class, 'create'])->name('seller.create');
-    Route::post('/seller/produk', [ProdukController::class, 'store'])->name('seller.store');
+    Route::get('/seller/produk/create', [ProdukController::class, 'create'])->name('seller.create')->middleware('profile.complete');
+    Route::post('/seller/produk', [ProdukController::class, 'store'])->name('seller.store')->middleware('profile.complete');
     Route::get('/seller/produk/{produk}/edit', [ProdukController::class, 'edit'])->name('seller.edit');
     Route::put('/seller/produk/{produk}', [ProdukController::class, 'update'])->name('seller.update');
     Route::delete('/seller/produk/{produk}', [ProdukController::class, 'destroy'])->name('produk.destroy');
@@ -44,7 +45,6 @@ Route::middleware(['auth', 'role:seller'])->group(function () {
     Route::delete('/seller/profile/portfolio/{index}', [SellerProfileController::class, 'deletePortfolio'])->name('seller.portfolio.delete');
 });
 
-// ─── Routes untuk Admin ──────────────────────────────────────────────
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/seller', [AdminController::class, 'seller'])->name('admin.seller');
@@ -60,9 +60,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('/admin/kategori/{category}', [AdminController::class, 'updateKategori'])->name('admin.kategori.update');
     Route::patch('/admin/kategori/{category}/toggle', [AdminController::class, 'toggleKategori'])->name('admin.kategori.toggle');
     Route::delete('/admin/kategori/{category}', [AdminController::class, 'destroyKategori'])->name('admin.kategori.destroy');
+    Route::get('/admin/feedback', [AdminController::class, 'feedback'])->name('admin.feedback');
+    Route::patch('/admin/feedback/{feedback}/read', [AdminController::class, 'markFeedbackRead'])->name('admin.feedback.read');
+    Route::delete('/admin/feedback/{feedback}', [AdminController::class, 'destroyFeedback'])->name('admin.feedback.destroy');
 });
 
-// ─── Routes umum (auth tanpa role tertentu) ──────────────────────────
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

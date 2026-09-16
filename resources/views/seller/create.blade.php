@@ -134,7 +134,7 @@
                 <div class="pt-4">
                     <button type="submit"
                         class=" bg-[#4F46E5] hover:bg-indigo-700 text-white px-8 py-3 rounded-xl font-bold text-sm shadow-md shadow-indigo-600/20 transition-all hover:-translate-y-0.5 active:scale-95">
-                        Simpan Jasa
+                        Simpan
                     </button>
                 </div>
 

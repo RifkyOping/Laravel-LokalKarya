@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Feedback;
 use App\Models\User;
 use App\Models\SellerProfile;
 use App\Models\Produk;
@@ -30,7 +31,7 @@ class AdminController extends Controller
                 return [
                     'tipe' => 'seller',
                     'judul' => 'Pengguna Baru Mendaftar',
-                    'deskripsi' => $user->name . ' mendaftar sebagai kreator baru.',
+                    'deskripsi' => $user->name . ' mendaftar sebagai Seller baru.',
                     'waktu' => $user->created_at,
                 ];
             });
@@ -40,7 +41,7 @@ class AdminController extends Controller
             ->take(5)
             ->get()
             ->map(function ($produk) {
-                $sellerName = $produk->user ? $produk->user->name : 'Kreator';
+                $sellerName = $produk->user ? $produk->user->name : 'Seller';
                 return [
                     'tipe' => 'produk',
                     'judul' => 'Jasa Baru Ditambahkan',
@@ -49,7 +50,20 @@ class AdminController extends Controller
                 ];
             });
 
-        $recentActivities = $recentSellers->concat($recentProduks)
+        $recentFeedbacks = Feedback::query()
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get()
+            ->map(function ($fb) {
+                return [
+                    'tipe' => 'feedback',
+                    'judul' => 'Feedback Baru Diterima',
+                    'deskripsi' => $fb->name . ' memberikan feedback ' . $fb->rating . ' bintang.',
+                    'waktu' => $fb->created_at,
+                ];
+            });
+
+        $recentActivities = $recentSellers->concat($recentProduks)->concat($recentFeedbacks)
             ->sortByDesc('waktu')
             ->take(5);
 
@@ -219,5 +233,26 @@ class AdminController extends Controller
     {
         $category->delete();
         return redirect()->route('admin.kategori')->with('success', 'Kategori berhasil dihapus.');
+    }
+
+    // ─── Feedback ──────────────────────────────────────────────────────
+
+    public function feedback()
+    {
+        $feedbacks = Feedback::orderBy('is_read')->orderByDesc('created_at')->paginate(15);
+        $unreadCount = Feedback::where('is_read', false)->count();
+        return view('admin.feedback', compact('feedbacks', 'unreadCount'));
+    }
+
+    public function markFeedbackRead(Feedback $feedback)
+    {
+        $feedback->update(['is_read' => true]);
+        return redirect()->back()->with('success', 'Feedback ditandai telah dibaca.');
+    }
+
+    public function destroyFeedback(Feedback $feedback)
+    {
+        $feedback->delete();
+        return redirect()->back()->with('success', 'Feedback berhasil dihapus.');
     }
 }

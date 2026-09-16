@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Encoders\WebpEncoder;
 
 class ProdukController extends Controller
 {
@@ -17,13 +18,13 @@ class ProdukController extends Controller
      */
     private function processAndStoreImage($file): string
     {
-        $manager  = new ImageManager(new Driver());
-        $image    = $manager->read($file->getRealPath());
+        $manager  = new ImageManager(Driver::class);
+        $image    = $manager->decode($file->getRealPath());
 
         // Resize hanya jika lebar > 800px, tinggi proporsional
         $image->scaleDown(width: 800);
 
-        $webpData = $image->toWebp(80)->toString();
+        $webpData = $image->encode(new WebpEncoder(quality: 80))->toString();
         $filename = 'thumbnails/' . uniqid('img_', true) . '.webp';
 
         Storage::disk('public')->put($filename, $webpData);
